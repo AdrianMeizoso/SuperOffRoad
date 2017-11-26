@@ -21,6 +21,7 @@ public:
 
 	SDL_Texture* graphics = nullptr;
 	vector<SDL_Rect> rotationCarSprites;
+	vector<SDL_Rect> rotationShadowSprites;
 	SDL_Rect currentRect;
 	fPoint position;
 

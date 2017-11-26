@@ -22,6 +22,7 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 {
 	// input: x, y, w, h
 	
+	//Sprites rotation on simple ground
 	rotationCarSprites.push_back({ 388, 21, 46, 29 });
 	rotationCarSprites.push_back({ 343, 21, 46, 29 });
 	rotationCarSprites.push_back({ 296, 21, 46, 29 });
@@ -54,6 +55,41 @@ ModulePlayer::ModulePlayer(bool active) : Module(active)
 	rotationCarSprites.push_back({ 516, 21, 46, 29 });
 	rotationCarSprites.push_back({ 481, 21, 46, 29 });
 	rotationCarSprites.push_back({ 435, 21, 46, 29 });
+
+
+	//Sprites rotation on simple ground
+	rotationShadowSprites.push_back({ 388, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 343, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 296, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 249, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 202, 646, 46, 29 });
+	rotationShadowSprites.push_back({ 153, 647, 46, 29 });
+	rotationShadowSprites.push_back({ 105, 647, 46, 29 });
+	rotationShadowSprites.push_back({ 57, 648, 46, 29 });
+	rotationShadowSprites.push_back({ 8, 648, 46, 29 });
+	rotationShadowSprites.push_back({ 1465, 647, 46, 29 });
+	rotationShadowSprites.push_back({ 1416, 646, 46, 29 });
+	rotationShadowSprites.push_back({ 1367, 646, 46, 29 });
+	rotationShadowSprites.push_back({ 1318, 646, 46, 29 });
+	rotationShadowSprites.push_back({ 1267, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 1234, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 1187, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 1141, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 1094, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 1047, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 1000, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 953, 646, 46, 29 });
+	rotationShadowSprites.push_back({ 904, 647, 46, 29 });
+	rotationShadowSprites.push_back({ 855, 647, 46, 29 });
+	rotationShadowSprites.push_back({ 808, 647, 46, 29 });
+	rotationShadowSprites.push_back({ 760, 648, 46, 29 });
+	rotationShadowSprites.push_back({ 712, 648, 46, 29 });
+	rotationShadowSprites.push_back({ 664, 647, 46, 29 });
+	rotationShadowSprites.push_back({ 615, 646, 46, 29 });
+	rotationShadowSprites.push_back({ 564, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 516, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 481, 645, 46, 29 });
+	rotationShadowSprites.push_back({ 435, 645, 46, 29 });
 
 	currentRect = rotationCarSprites[0];
 }
@@ -120,7 +156,10 @@ update_status ModulePlayer::Update()
 
 	position.x += mx;
 	position.y += my;
-	
+
+	float xRelative = position.x;
+	float yRelative = position.y;
+
 	/*
 	if (mx != 0)LOG("Mx: %f", mx);
 	LOG("positionX: %d", position.x);
@@ -133,17 +172,23 @@ update_status ModulePlayer::Update()
 
 	if (angle < 0)
 	{
-		calcRect = trunc(((((int)angle * -1) % 360) * 32) / 360);
+		calcRect = rotationCarSprites.size() - (((((int)angle * -1)
+			% 360)
+			* 32) 
+			/ 360) 
+			- 1;
 	}
 	else
 	{
-		calcRect = trunc((((int)angle % 360) * 32) / 360);
+		calcRect = trunc((((int)(angle) % 360) * 32) / 360);
 	}
 	
 	currentRect = rotationCarSprites[calcRect];
 
 	// Draw everything --------------------------------------
-	App->renderer->Blit(graphics, position.x, position.y, &currentRect);
+	App->renderer->Blit(graphics, xRelative + 2, yRelative + 2, &rotationShadowSprites[calcRect]);
+	App->renderer->Blit(graphics, xRelative, yRelative, &currentRect);
+
 
 	return UPDATE_CONTINUE;
 }

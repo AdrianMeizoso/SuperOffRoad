@@ -26,7 +26,7 @@ bool ModuleSceneIntro::Start()
 	
 	background = App->textures->Load("Resources/Images/Level/General_Sprites.png");
 
-	//App->audio->PlayMusic("Resources/Music/title.ogg", 1.0f);
+	App->audio->PlayMusic("Resources/Music/title.ogg", 1.0f);
 
 	if(fx == 0)
 		fx = App->audio->LoadFx("rtype/starting.wav");
