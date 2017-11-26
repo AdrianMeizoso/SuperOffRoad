@@ -20,12 +20,42 @@ float degreesFromRadians(float rad)
 
 ModulePlayer::ModulePlayer(bool active) : Module(active)
 {
-	rect.h = 29;
-	rect.w = 46;
-	rect.x = 8;
-	rect.y = 24;
+	// input: x, y, w, h
+	
+	rotationCarSprites.push_back({ 388, 21, 46, 29 });
+	rotationCarSprites.push_back({ 343, 21, 46, 29 });
+	rotationCarSprites.push_back({ 296, 21, 46, 29 });
+	rotationCarSprites.push_back({ 249, 21, 46, 29 });
+	rotationCarSprites.push_back({ 202, 22, 46, 29 });
+	rotationCarSprites.push_back({ 153, 23, 46, 29 });
+	rotationCarSprites.push_back({ 105, 23, 46, 29 });
+	rotationCarSprites.push_back({ 57, 24, 46, 29 });
+	rotationCarSprites.push_back({ 8, 24, 46, 29 });
+	rotationCarSprites.push_back({ 1465, 23, 46, 29 });
+	rotationCarSprites.push_back({ 1416, 22, 46, 29 });
+	rotationCarSprites.push_back({ 1367, 22, 46, 29 });
+	rotationCarSprites.push_back({ 1318, 22, 46, 29 });
+	rotationCarSprites.push_back({ 1267, 21, 46, 29 });
+	rotationCarSprites.push_back({ 1234, 21, 46, 29 });
+	rotationCarSprites.push_back({ 1187, 21, 46, 29 });
+	rotationCarSprites.push_back({ 1141, 21, 46, 29 });
+	rotationCarSprites.push_back({ 1094, 21, 46, 29 });
+	rotationCarSprites.push_back({ 1047, 21, 46, 29 });
+	rotationCarSprites.push_back({ 1000, 21, 46, 29 });
+	rotationCarSprites.push_back({ 953, 22, 46, 29 });
+	rotationCarSprites.push_back({ 904, 23, 46, 29 });
+	rotationCarSprites.push_back({ 855, 23, 46, 29 });
+	rotationCarSprites.push_back({ 808, 23, 46, 29 });
+	rotationCarSprites.push_back({ 760, 24, 46, 29 });
+	rotationCarSprites.push_back({ 712, 24, 46, 29 });
+	rotationCarSprites.push_back({ 664, 23, 46, 29 });
+	rotationCarSprites.push_back({ 615, 22, 46, 29 });
+	rotationCarSprites.push_back({ 564, 21, 46, 29 });
+	rotationCarSprites.push_back({ 516, 21, 46, 29 });
+	rotationCarSprites.push_back({ 481, 21, 46, 29 });
+	rotationCarSprites.push_back({ 435, 21, 46, 29 });
 
-
+	currentRect = rotationCarSprites[0];
 }
 
 ModulePlayer::~ModulePlayer()
@@ -39,7 +69,7 @@ bool ModulePlayer::Start()
 	graphics = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);
 
 	speed = 0;
-	angle = 90;
+	angle = 0;
 	maxSpeed = 2.5;
 	acc = 0.03, dec = 0.05;
 	turnSpeed = 3.2;
@@ -99,9 +129,21 @@ update_status ModulePlayer::Update()
 	*/
 
 	LOG("angle: %f", angle);
+	int calcRect = 0;
+
+	if (angle < 0)
+	{
+		calcRect = trunc(((((int)angle * -1) % 360) * 32) / 360);
+	}
+	else
+	{
+		calcRect = trunc((((int)angle % 360) * 32) / 360);
+	}
+	
+	currentRect = rotationCarSprites[calcRect];
 
 	// Draw everything --------------------------------------
-	App->renderer->BlitWithAngle(graphics, position.x, position.y, &rect, 0, angle - 90);
+	App->renderer->Blit(graphics, position.x, position.y, &currentRect);
 
 	return UPDATE_CONTINUE;
 }

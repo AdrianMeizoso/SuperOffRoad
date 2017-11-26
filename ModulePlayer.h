@@ -20,7 +20,8 @@ public:
 public:
 
 	SDL_Texture* graphics = nullptr;
-	SDL_Rect rect;
+	vector<SDL_Rect> rotationCarSprites;
+	SDL_Rect currentRect;
 	fPoint position;
 
 	float speed = 0;
