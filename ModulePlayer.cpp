@@ -110,6 +110,7 @@ bool ModulePlayer::Start()
 	acc = 0.03, dec = 0.05;
 	turnSpeed = 3.2;
 
+
 	position.x = 150;
 	position.y = 120;
 
@@ -144,11 +145,24 @@ update_status ModulePlayer::Update()
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		angle -= turnSpeed;
+		if (angle < 0)
+		{
+			angle = 360 - turnSpeed;
+		}
 	}
 
 	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
 		angle += turnSpeed;
+		if (angle > 360)
+		{
+			angle = turnSpeed;
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		Start();
 	}
 
 	float mx = sinf(radiansFromDegrees(angle))*speed;
@@ -167,21 +181,14 @@ update_status ModulePlayer::Update()
 	LOG("positionY: %d", position.y);
 	*/
 
-	LOG("angle: %f", angle);
+	//LOG("angle: %f", angle);
 	int calcRect = 0;
 
-	if (angle < 0)
-	{
-		calcRect = rotationCarSprites.size() - (((((int)angle * -1)
-			% 360)
-			* 32) 
-			/ 360) 
-			- 1;
-	}
-	else
-	{
-		calcRect = trunc((((int)(angle) % 360) * 32) / 360);
-	}
+	
+	calcRect = trunc(((int)angle 
+		* 32)
+		/ 360);
+	
 	
 	currentRect = rotationCarSprites[calcRect];
 
