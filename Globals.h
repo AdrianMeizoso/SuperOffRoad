@@ -48,6 +48,6 @@ typedef unsigned int uint;
 #define SCREEN_HEIGHT 448
 #define FULLSCREEN false
 #define VSYNC true
-#define TITLE "Super Awesome Game"
+#define TITLE "Super off road"
 
 #endif //__GLOBALS_H__

@@ -3,6 +3,9 @@
 
 #include "Module.h"
 
+class Scoreboard;
+class Player;
+
 struct SDL_Texture;
 
 class ModuleLevelOne : public Module
@@ -18,8 +21,14 @@ public:
 public:
 
 	SDL_Texture* background = nullptr;
+	SDL_Texture* graphics = nullptr;
 	SDL_Texture* stars = nullptr;
 	SDL_Rect rect;
+	SDL_Rect rectAlter;
+	SDL_Rect rectTitleLevel;
+
+	Scoreboard* scoreboard;
+	Player* player;
 };
 
 #endif // __MODULESCENESPACE_H__

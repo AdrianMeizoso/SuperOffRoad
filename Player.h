@@ -1,21 +1,19 @@
-#ifndef __ModulePlayer_H__
-#define __ModulePlayer_H__
+#pragma once
 
-#include "Module.h"
+#include "Entity.h"
 #include "Animation.h"
 #include "Point.h"
 
 struct SDL_Texture;
 
-class ModulePlayer : public Module
+class Player: public Entity
 {
 public:
-	ModulePlayer(bool active = true);
-	~ModulePlayer();
+	Player();
+	~Player();
 
-	bool Start();
-	update_status Update();
-	bool CleanUp();
+	void Paint();
+	void CleanUp();
 
 public:
 
@@ -33,4 +31,3 @@ public:
 	float turnSpeed = 0.08;
 };
 
-#endif

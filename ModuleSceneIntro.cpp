@@ -11,8 +11,8 @@
 ModuleSceneIntro::ModuleSceneIntro(bool active) : Module(active)
 {
 	rect.h = 400;
-	rect.w = 640;
-	rect.x = 608;
+	rect.w = 608;
+	rect.x = 0;
 	rect.y = 800;
 }
 
@@ -24,14 +24,17 @@ bool ModuleSceneIntro::Start()
 {
 	LOG("Loading space intro");
 	
-	background = App->textures->Load("Resources/Images/Level/General_Sprites.png");
+	background = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);
 
-	App->audio->PlayMusic("Resources/Music/title.ogg", 1.0f);
+	//App->audio->PlayMusic("Resources/Music/title.ogg", 1.0f);
 
 	if(fx == 0)
 		fx = App->audio->LoadFx("rtype/starting.wav");
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
+
+	start_time = SDL_GetTicks();
+	total_time = (Uint32)(3.0f * 1000.0f);
 	
 	return true;
 }
@@ -49,12 +52,24 @@ bool ModuleSceneIntro::CleanUp()
 // Update: draw background
 update_status ModuleSceneIntro::Update()
 {
-	App->renderer->Blit(background, 0, SCREEN_HEIGHT / 2 - rect.h / 2, &rect);
+	Uint32 now = SDL_GetTicks() - start_time;
 
-	if(App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->fade->isFading() == false)
+	App->renderer->Blit(background, SCREEN_WIDTH / 2 - rect.w / 2, SCREEN_HEIGHT / 2 - rect.h / 2, &rect);
+
+	if (now >= total_time)
 	{
-		App->fade->FadeToBlack((Module*)App->scene_levelOne, this);
-		App->audio->PlayFx(fx);
+		rect.h = 400;
+		rect.w = 640;
+		rect.x = 608;
+		rect.y = 800;
+
+		App->renderer->Blit(background, 0, SCREEN_HEIGHT / 2 - rect.h / 2, &rect);
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->fade->isFading() == false)
+		{
+			App->fade->FadeToBlack((Module*)App->scene_levelOne, this, 1);
+			App->audio->PlayFx(fx);
+		}
 	}
 
 	return UPDATE_CONTINUE;
