@@ -105,19 +105,48 @@ Player::Player()
 	angle = 0;
 	maxSpeed = 2.5;
 	acc = 0.03, dec = 0.05;
-	turnSpeed = 3.2;
+	turnSpeed = 3.;
 
 	position.x = 150;
 	position.y = 120;
 
-}
+	float ptemp = .0f;
 
+	while (ptemp < 360) {
+		anglesRot.push_back(ptemp);
+		ptemp += (11.25f);
+	}
+
+	LOG("Yeah");
+}
 
 Player::~Player()
 {
 	LOG("Unloading player");
 
 	App->textures->Unload(graphics);
+}
+
+float Player::GetAngleSprite(float angle)
+{
+	for (int i = 0; i < anglesRot.size(); i++)
+	{
+		if (angle < anglesRot[i])
+		{
+			if (((anglesRot[i] + anglesRot[i - 1]) / 2) > angle)
+			{
+				curentSpritePos = i - 1;
+				return anglesRot[i - 1];
+			}
+			else
+			{
+				curentSpritePos = i;
+				return anglesRot[i];
+			}
+		}
+	}
+	curentSpritePos = 0;
+	return 0;
 }
 
 void Player::Paint()
@@ -156,17 +185,21 @@ void Player::Paint()
 		//Player();
 	}
 
-	int angleCalc = angle;
+	float angleCalc = angle;
 
-	if (angle < 10 || angle > 350)
-	{
-		angleCalc = 0;
-	}
-	else if (angle < 190 && angle > 170)
-	{
-		angleCalc = 180;
-	}
+	angleCalc = GetAngleSprite(angle);
 
+
+	//Calculation of deviation of perspective
+	if (angleCalc > 180)
+	{
+		angleCalc -= sinf(radiansFromDegrees(angleCalc)) * 26.58f;
+	}
+	else
+	{
+		angleCalc += sinf(radiansFromDegrees(angleCalc)) * 26.58f;
+	}
+	
 	float mx = -cosf(radiansFromDegrees(angleCalc))*speed;
 	float my = -sinf(radiansFromDegrees(angleCalc))*speed;
 
@@ -176,26 +209,12 @@ void Player::Paint()
 	float xRelative = position.x;
 	float yRelative = position.y;
 
-	/*
-	if (mx != 0)LOG("Mx: %f", mx);
-	LOG("positionX: %d", position.x);
-	if (my != 0)LOG("My: %f", my);
-	LOG("positionY: %d", position.y);
-	*/
+	LOG("angleCalc: %f, angle: %f", angleCalc, angle);
 
-	LOG("angle: %f", angle);
-	int calcRect = 0;
-
-	calcRect = trunc(((int)angleCalc
-		* 32)
-		/ 360);
-
-	if (calcRect >= 32) calcRect = 31;
-
-	currentRect = rotationCarSprites[calcRect];
+	currentRect = rotationCarSprites[curentSpritePos];
 
 	// Draw everything --------------------------------------
-	App->renderer->Blit(graphics, xRelative + 2, yRelative + 2, &rotationShadowSprites[calcRect]);
+	App->renderer->Blit(graphics, xRelative + 2, yRelative + 2, &rotationShadowSprites[curentSpritePos]);
 	App->renderer->Blit(graphics, xRelative, yRelative, &currentRect);
 
 }
