@@ -66,6 +66,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="Flag.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleAudio.h">
@@ -126,6 +129,9 @@
       <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Flag.h">
       <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>

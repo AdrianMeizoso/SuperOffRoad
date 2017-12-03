@@ -3,6 +3,7 @@
 
 #include "Module.h"
 
+class Flag;
 class Scoreboard;
 class Player;
 
@@ -29,6 +30,9 @@ public:
 
 	Scoreboard* scoreboard;
 	Player* player;
+	Flag* flag;
+	Flag* flag2;
+	Flag* flag3;
 };
 
 #endif // __MODULESCENESPACE_H__

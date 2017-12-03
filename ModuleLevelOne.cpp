@@ -1,13 +1,15 @@
 #include "Globals.h"
 #include "Application.h"
+#include "ModuleLevelOne.h"
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModuleRender.h"
 #include "ModuleCollision.h"
 #include "ModuleParticles.h"
-#include "ModuleLevelOne.h"
+#include "ModuleInput.h"
 #include "Scoreboard.h"
 #include "Player.h"
+#include "Flag.h"
 
 ModuleLevelOne::ModuleLevelOne(bool active) : Module(active)
 {
@@ -25,6 +27,7 @@ ModuleLevelOne::ModuleLevelOne(bool active) : Module(active)
 	rectTitleLevel.w = 128;
 	rectTitleLevel.x = 143;
 	rectTitleLevel.y = 5311;
+
 }
 
 ModuleLevelOne::~ModuleLevelOne()
@@ -39,8 +42,10 @@ bool ModuleLevelOne::Start()
 	graphics = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);
 
 	player = new Player();
-
 	scoreboard = new Scoreboard(45, 310);
+	flag = new Flag(204, 298);
+	flag2 = new Flag(300, 305);
+	flag3 = new Flag(361, 212);
 
 	return true;
 }
@@ -58,12 +63,21 @@ bool ModuleLevelOne::CleanUp()
 // Update: draw background
 update_status ModuleLevelOne::Update()
 {
+	if (App->input->GetMouseButtonDown(1) == KEY_DOWN)
+	{
+		LOG("x = %d,y = %d", App->input->GetMousePosition().x, App->input->GetMousePosition().y);
+	}
+
 	// Draw everything --------------------------------------
 	App->renderer->Blit(background, 0, SCREEN_HEIGHT / 2 - rect.h / 2, &rect);
 
 	player->Paint();
 
 	App->renderer->Blit(background, 32, SCREEN_HEIGHT / 2 - rectAlter.h / 2, &rectAlter);
+
+	flag->Paint();
+	flag2->Paint();
+	flag3->Paint();
 
 	App->renderer->Blit(graphics, SCREEN_WIDTH / 2 - rectTitleLevel.w / 2, 16, &rectTitleLevel);
 

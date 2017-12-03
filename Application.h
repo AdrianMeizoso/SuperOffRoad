@@ -1,7 +1,7 @@
 #ifndef __APPLICATION_CPP__
 #define __APPLICATION_CPP__
 
-#include<list>
+#include <list>
 #include "Globals.h"
 #include "Module.h"
 

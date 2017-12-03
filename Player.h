@@ -12,11 +12,10 @@ public:
 	Player();
 	~Player();
 
-	void Paint();
-	void CleanUp();
+	void Paint() override;
+	void CleanUp() override;
 
 private:
-	int GetPosSprite(float angle);
 	float GetAngleSprite(float angle);
 
 public:
@@ -28,12 +27,12 @@ public:
 	SDL_Rect currentRect;
 	fPoint position;
 
-	float speed = 0;
-	float angle = 0;
-	float maxSpeed = 12.0;
-	float acc = 0.2;
-	float dec = 0.3;
-	float turnSpeed = 0.08;
+	float speed = 0.f;
+	float angle = 0.f;
+	float maxSpeed = 12.0f;
+	float acc = 0.2f;
+	float dec = 0.3f;
+	float turnSpeed = 0.08f;
 
 	int curentSpritePos = 0;
 };

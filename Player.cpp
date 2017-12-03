@@ -101,18 +101,18 @@ Player::Player()
 
 	graphics = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);
 
-	speed = 0;
-	angle = 0;
-	maxSpeed = 2.5;
-	acc = 0.03, dec = 0.05;
-	turnSpeed = 3.;
+	speed = 0.f;
+	angle = 0.f;
+	maxSpeed = 2.5f;
+	acc = 0.03f, dec = 0.05f;
+	turnSpeed = 3.f;
 
-	position.x = 150;
-	position.y = 120;
+	position.x = 340;
+	position.y = 380;
 
-	float ptemp = .0f;
+	float ptemp = 0.f;
 
-	while (ptemp < 360) {
+	while (ptemp < 360.f) {
 		anglesRot.push_back(ptemp);
 		ptemp += (11.25f);
 	}
@@ -129,7 +129,7 @@ Player::~Player()
 
 float Player::GetAngleSprite(float angle)
 {
-	for (int i = 0; i < anglesRot.size(); i++)
+	for (unsigned int i = 0; i < anglesRot.size(); i++)
 	{
 		if (angle < anglesRot[i])
 		{
@@ -209,12 +209,12 @@ void Player::Paint()
 	float xRelative = position.x;
 	float yRelative = position.y;
 
-	LOG("angleCalc: %f, angle: %f", angleCalc, angle);
+	//LOG("angleCalc: %f, angle: %f", angleCalc, angle);
 
 	currentRect = rotationCarSprites[curentSpritePos];
 
 	// Draw everything --------------------------------------
-	App->renderer->Blit(graphics, xRelative + 2, yRelative + 2, &rotationShadowSprites[curentSpritePos]);
+	App->renderer->Blit(graphics, xRelative + 2.f, yRelative + 2.f, &rotationShadowSprites[curentSpritePos]);
 	App->renderer->Blit(graphics, xRelative, yRelative, &currentRect);
 
 }
