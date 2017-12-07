@@ -124,6 +124,7 @@
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleLevelOne.cpp" />
     <ClCompile Include="ModuleParticles.cpp" />
+    <ClCompile Include="ModuleReadFile.cpp" />
     <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="ModuleSceneIntro.cpp" />
     <ClCompile Include="ModuleSceneSpace.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleLevelOne.h" />
     <ClInclude Include="ModuleParticles.h" />
+    <ClInclude Include="ModuleReadFile.h" />
     <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="ModuleSceneIntro.h" />
     <ClInclude Include="ModuleSceneSpace.h" />

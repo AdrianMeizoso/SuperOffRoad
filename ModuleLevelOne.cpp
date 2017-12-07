@@ -10,6 +10,7 @@
 #include "Scoreboard.h"
 #include "Player.h"
 #include "Flag.h"
+#include "ModuleReadFile.h"
 
 ModuleLevelOne::ModuleLevelOne(bool active) : Module(active)
 {
@@ -33,6 +34,17 @@ ModuleLevelOne::ModuleLevelOne(bool active) : Module(active)
 ModuleLevelOne::~ModuleLevelOne()
 {}
 
+int ModuleLevelOne::getHeightInPosition()
+{
+	int index = 0;
+	if (player->position.y > 0 && player->position.y < 449 && player->position.x > 0 && player->position.x < 640)
+	{
+		index = 448 * (int)player->position.x + (int)player->position.y;
+	}
+
+	return heightMap[index];
+}
+
 // Load assets
 bool ModuleLevelOne::Start()
 {
@@ -40,6 +52,8 @@ bool ModuleLevelOne::Start()
 
 	background = App->textures->Load("Resources/Images/Level/levels.png");
 	graphics = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);
+
+	heightMap = App->readFile->readHeightMap("Resources/Images/Level/LevelOne/HeightMap.txt");
 
 	player = new Player();
 	scoreboard = new Scoreboard(45, 310);
@@ -70,6 +84,8 @@ update_status ModuleLevelOne::Update()
 
 	// Draw everything --------------------------------------
 	App->renderer->Blit(background, 0, SCREEN_HEIGHT / 2 - rect.h / 2, &rect);
+
+	LOG("height = %d", getHeightInPosition());
 
 	player->Paint();
 

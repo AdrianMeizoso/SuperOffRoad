@@ -153,13 +153,33 @@ void Player::Paint()
 {
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && speed < maxSpeed)
 	{
-		speed += acc;
+		if (speed < 0)
+		{
+			speed += acc*2;
+		}
+		else {
+			speed += acc;
+		}
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_IDLE)
 	{
-		if (speed - dec > 0) speed -= dec;
-		else speed = 0;
+		if (speed - dec > 0)
+		{
+			speed -= dec;
+			if (speed < 0)
+			{
+				speed = 0;
+			}
+		}
+		else if (speed - dec < 0) 
+		{
+			speed += dec;
+			if (speed > 0)
+			{
+				speed = 0;
+			}
+		}
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
@@ -206,16 +226,19 @@ void Player::Paint()
 	position.x += mx;
 	position.y += my;
 
-	float xRelative = position.x;
-	float yRelative = position.y;
+	//LOG("position.x: %f, position.y: %f", position.x, position.y);
 
-	//LOG("angleCalc: %f, angle: %f", angleCalc, angle);
 
 	currentRect = rotationCarSprites[curentSpritePos];
 
 	// Draw everything --------------------------------------
-	App->renderer->Blit(graphics, xRelative + 2.f, yRelative + 2.f, &rotationShadowSprites[curentSpritePos]);
-	App->renderer->Blit(graphics, xRelative, yRelative, &currentRect);
+	App->renderer->Blit(graphics, position.x + 2.f - currentRect.w / 2, position.y + 2.f - currentRect.h / 2, &rotationShadowSprites[curentSpritePos]);
+	App->renderer->Blit(graphics, position.x - currentRect.w/2, position.y- currentRect.h / 2, &currentRect);
+
+	if (position.x <= -7)
+	{
+		speed *= -1;
+	}
 
 }
 

@@ -19,6 +19,8 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	int getHeightInPosition();
+
 public:
 
 	SDL_Texture* background = nullptr;
@@ -33,6 +35,8 @@ public:
 	Flag* flag;
 	Flag* flag2;
 	Flag* flag3;
+
+	int* heightMap = nullptr;
 };
 
 #endif // __MODULESCENESPACE_H__

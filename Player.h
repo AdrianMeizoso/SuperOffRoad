@@ -33,6 +33,7 @@ public:
 	float acc = 0.2f;
 	float dec = 0.3f;
 	float turnSpeed = 0.08f;
+	int height = 0;
 
 	int curentSpritePos = 0;
 };
