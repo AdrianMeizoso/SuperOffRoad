@@ -8,15 +8,30 @@
 // Example: lasers should not collide with lasers but should collider with walls
 // enemy shots will collide with other enemies ? and against walls ?
 
+enum TypeCollider { PLAYER, FLAG };
+
 struct Collider
 {
 	SDL_Rect rect = { 0,0,0,0 };
 	bool to_delete = false;
+	TypeCollider typeCollider;
 
 	// TODO 10: Add a way to notify other classes that a collision happened
 
-	Collider(SDL_Rect rectangle) : // expand this call if you need to
-		rect(rectangle)
+	class CListener
+	{
+		public:
+
+		virtual void OnCollide()
+		{
+			LOG("Nothing Collide");
+		}
+	};
+
+	CListener* listener = nullptr;
+
+	Collider(SDL_Rect rectangle, TypeCollider typeCollider) : // expand this call if you need to
+		rect(rectangle), typeCollider(typeCollider)
 	{}
 
 	void SetPos(int x, int y)
@@ -40,13 +55,17 @@ public:
 
 	bool CleanUp();
 
-	Collider* AddCollider(const SDL_Rect& rect);
+	Collider* AddCollider(const SDL_Rect& rect, TypeCollider typeCollider, Collider::CListener* listener);
 	void DebugDraw();
 
 private:
 
 	std::list<Collider*> colliders;
 	bool debug = false;
+
+	//PLAYER FLAG
+	bool collisionMatrix[2][2] = {	{ false, true },
+									{ true, false }};
 };
 
 #endif // __ModuleCollision_H__

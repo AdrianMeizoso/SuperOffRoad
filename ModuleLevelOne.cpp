@@ -85,7 +85,7 @@ update_status ModuleLevelOne::Update()
 	// Draw everything --------------------------------------
 	App->renderer->Blit(background, 0, SCREEN_HEIGHT / 2 - rect.h / 2, &rect);
 
-	LOG("height = %d", getHeightInPosition());
+	//LOG("height = %d", getHeightInPosition());
 
 	player->Paint();
 

@@ -12,10 +12,13 @@ public:
 
 	void Paint() override;
 	void CleanUp() override;
+	void OnCollide() override;
 
 public:
 	int x = 0;
 	int y = 0;
+
+	bool active = false;
 
 	SDL_Texture* background = nullptr;
 
@@ -24,5 +27,7 @@ public:
 	Animation small;
 
 	Animation* currentAnimation;
+
+	Collider* flagCollider;
 };
 

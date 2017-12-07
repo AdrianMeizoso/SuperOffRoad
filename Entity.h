@@ -1,6 +1,7 @@
 #pragma once
+#include "ModuleCollision.h"
 
-class Entity
+class Entity : public Collider::CListener
 {
 public:
 
@@ -8,5 +9,6 @@ public:
 
 	virtual void Paint() = 0;
 	virtual void CleanUp() = 0;
+	virtual void OnCollide() override = 0;
 };
 

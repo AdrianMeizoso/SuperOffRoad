@@ -13,7 +13,7 @@ public:
 
 	void Paint() override;
 	void CleanUp() override;
-
+	void OnCollide() override;
 
 public:
 	int x = 0;

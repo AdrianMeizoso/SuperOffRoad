@@ -14,6 +14,7 @@ public:
 
 	void Paint() override;
 	void CleanUp() override;
+	void OnCollide() override;
 
 private:
 	float GetAngleSprite(float angle);
@@ -26,6 +27,8 @@ public:
 	vector<float> anglesRot;
 	SDL_Rect currentRect;
 	fPoint position;
+
+	Collider* collider = nullptr;
 
 	float speed = 0.f;
 	float angle = 0.f;

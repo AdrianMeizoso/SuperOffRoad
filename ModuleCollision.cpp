@@ -36,6 +36,25 @@ update_status ModuleCollision::Update()
 	// TODO 8: Check collisions between all colliders. 
 	// After making it work, review that you are doing the minumum checks possible
 
+	list<Collider*>::iterator iti = colliders.begin();
+	for (int i = 0; i < (int)(colliders.size() - 1); ++i)
+	{
+		list<Collider*>::iterator itj = iti;
+		for (int j = (i + 1); j < colliders.size(); ++j)
+		{
+			++itj;
+			if (collisionMatrix[(*iti)->typeCollider][(*itj)->typeCollider])
+			{
+				if ((*iti)->CheckCollision((*itj)->rect))
+				{
+					if ((*iti)->listener != nullptr)((*iti)->listener)->OnCollide();
+					if ((*itj)->listener != nullptr)((*itj)->listener)->OnCollide();
+				}
+			}
+		}
+		++iti;
+	}
+
 	if(App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
@@ -64,9 +83,10 @@ bool ModuleCollision::CleanUp()
 	return true;
 }
 
-Collider* ModuleCollision::AddCollider(const SDL_Rect& rect)
+Collider* ModuleCollision::AddCollider(const SDL_Rect& rect, TypeCollider typecollider, Collider::CListener* listener)
 {
-	Collider* ret = new Collider(rect);
+	Collider* ret = new Collider(rect, typecollider);
+	ret->listener = listener;
 
 	colliders.push_back(ret);
 
@@ -80,5 +100,9 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 	// TODO 7: Create by hand (avoid consulting the internet) a simple collision test
 	// Return true if rectangle argument "r" if intersecting with "this->rect"
 
-	return false;
+	if (((r.y - r.h) > rect.y)) return false;
+	if ((r.y < (rect.y - rect.h))) return false;
+	if ((r.x >(rect.x + rect.w))) return false;
+	if (((r.x + r.w) < rect.x)) return false;
+	return true;
 }

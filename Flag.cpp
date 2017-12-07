@@ -3,6 +3,7 @@
 #include "Flag.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
+#include "ModuleCollision.h"
 
 Flag::Flag(int x, int y) : x(x), y(y)
 {
@@ -15,14 +16,16 @@ Flag::Flag(int x, int y) : x(x), y(y)
 	large.frames.push_back({ 528, 6450, 30, 30 });
 	large.frames.push_back({ 560, 6448, 30, 32 });
 	large.frames.push_back({ 592, 6448, 26, 32 });
-	large.speed = 0.08f;
+	large.speed = 0.1f;
 	large.loop = true;
 
 	small.frames.push_back({ 624, 6448, 10, 32 }); //Small Movement
 	small.frames.push_back({ 656, 6448, 14, 32 });
-	small.speed = 0.08f;
+	small.speed = 0.1f;
 
 	background = App->textures->LoadWithColorKey("Resources/Images/Level/Levels.png", 0xBA, 0xFE, 0xCA);
+
+	App->collision->AddCollider({x,y,18,32}, FLAG, this);
 }
 
 
@@ -32,12 +35,28 @@ Flag::~Flag()
 
 void Flag::Paint()
 {
-	int xRelative = x - (idle.GetCurrentFrame().w / 2);
-	int yRelative = y - idle.GetCurrentFrame().h;
+	if (active)
+	{
+		int xRelative = x - (idle.GetCurrentFrame().w / 2);
+		int yRelative = y - idle.GetCurrentFrame().h;
 
-	App->renderer->Blit(background, xRelative, yRelative , &(idle.GetCurrentFrame()));
+		App->renderer->Blit(background, xRelative, yRelative, &(large.GetCurrentFrame()));
+	}
+	else
+	{
+		int xRelative = x - (idle.GetCurrentFrame().w / 2);
+		int yRelative = y - idle.GetCurrentFrame().h;
+
+		App->renderer->Blit(background, xRelative, yRelative, &(idle.GetCurrentFrame()));
+	}
+	
 }
 
 void Flag::CleanUp()
 {
+}
+
+void Flag::OnCollide()
+{
+	active = true;
 }

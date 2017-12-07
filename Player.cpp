@@ -107,8 +107,10 @@ Player::Player()
 	acc = 0.03f, dec = 0.05f;
 	turnSpeed = 3.f;
 
-	position.x = 340;
-	position.y = 380;
+	position.x = 352;
+	position.y = 387;
+
+	collider = App->collision->AddCollider({ (int)position.x, (int)position.y,46,29 }, PLAYER, this);
 
 	float ptemp = 0.f;
 
@@ -116,8 +118,6 @@ Player::Player()
 		anglesRot.push_back(ptemp);
 		ptemp += (11.25f);
 	}
-
-	LOG("Yeah");
 }
 
 Player::~Player()
@@ -228,8 +228,9 @@ void Player::Paint()
 
 	//LOG("position.x: %f, position.y: %f", position.x, position.y);
 
-
 	currentRect = rotationCarSprites[curentSpritePos];
+
+	collider->SetPos((int)position.x, (int)position.y);
 
 	// Draw everything --------------------------------------
 	App->renderer->Blit(graphics, position.x + 2.f - currentRect.w / 2, position.y + 2.f - currentRect.h / 2, &rotationShadowSprites[curentSpritePos]);
@@ -243,5 +244,9 @@ void Player::Paint()
 }
 
 void Player::CleanUp()
+{
+}
+
+void Player::OnCollide()
 {
 }

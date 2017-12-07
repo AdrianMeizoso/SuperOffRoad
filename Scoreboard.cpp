@@ -27,3 +27,5 @@ void Scoreboard::Paint()
 void Scoreboard::CleanUp()
 {
 }
+
+void Scoreboard::OnCollide(){ /*No collision*/ }
