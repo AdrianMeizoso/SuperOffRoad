@@ -22,7 +22,7 @@ struct Collider
 	{
 		public:
 
-		virtual void OnCollide()
+		virtual void OnCollide(TypeCollider extType)
 		{
 			LOG("Nothing Collide");
 		}

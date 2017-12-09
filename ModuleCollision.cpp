@@ -47,8 +47,8 @@ update_status ModuleCollision::Update()
 			{
 				if ((*iti)->CheckCollision((*itj)->rect))
 				{
-					if ((*iti)->listener != nullptr)((*iti)->listener)->OnCollide();
-					if ((*itj)->listener != nullptr)((*itj)->listener)->OnCollide();
+					if ((*iti)->listener != nullptr)((*iti)->listener)->OnCollide((*itj)->typeCollider);
+					if ((*itj)->listener != nullptr)((*itj)->listener)->OnCollide((*iti)->typeCollider);
 				}
 			}
 		}

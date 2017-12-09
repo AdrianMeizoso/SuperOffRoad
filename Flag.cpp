@@ -16,6 +16,12 @@ Flag::Flag(int x, int y) : x(x), y(y)
 	large.frames.push_back({ 528, 6450, 30, 30 });
 	large.frames.push_back({ 560, 6448, 30, 32 });
 	large.frames.push_back({ 592, 6448, 26, 32 });
+
+	large.frames.push_back({ 710, 6450, 22, 30 });
+	large.frames.push_back({ 737, 6452, 26, 28 });
+	large.frames.push_back({ 763, 6450, 30, 30 });
+	large.frames.push_back({ 795, 6448, 30, 32 });
+	large.frames.push_back({ 832, 6448, 26, 32 });
 	large.speed = 0.1f;
 	large.loop = true;
 
@@ -23,9 +29,9 @@ Flag::Flag(int x, int y) : x(x), y(y)
 	small.frames.push_back({ 656, 6448, 14, 32 });
 	small.speed = 0.1f;
 
-	background = App->textures->LoadWithColorKey("Resources/Images/Level/Levels.png", 0xBA, 0xFE, 0xCA);
+	background = App->textures->LoadWithColorKey("Resources/Images/Level/Levels2.png", 0xBA, 0xFE, 0xCA);
 
-	App->collision->AddCollider({x,y,18,32}, FLAG, this);
+	App->collision->AddCollider({x,y,10,20}, FLAG, this);
 }
 
 
@@ -37,8 +43,8 @@ void Flag::Paint()
 {
 	if (active)
 	{
-		int xRelative = x - (idle.GetCurrentFrame().w / 2);
-		int yRelative = y - idle.GetCurrentFrame().h;
+		int xRelative = x - (large.GetCurrentFrame().w / 2);
+		int yRelative = y - large.GetCurrentFrame().h;
 
 		App->renderer->Blit(background, xRelative, yRelative, &(large.GetCurrentFrame()));
 	}
@@ -49,14 +55,13 @@ void Flag::Paint()
 
 		App->renderer->Blit(background, xRelative, yRelative, &(idle.GetCurrentFrame()));
 	}
-	
 }
 
 void Flag::CleanUp()
 {
 }
 
-void Flag::OnCollide()
+void Flag::OnCollide(TypeCollider extType)
 {
 	active = true;
 }

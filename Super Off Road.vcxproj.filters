@@ -72,6 +72,9 @@
     <ClCompile Include="ModuleReadFile.cpp">
       <Filter>Core Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Npc.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleAudio.h">
@@ -139,6 +142,12 @@
     </ClInclude>
     <ClInclude Include="ModuleReadFile.h">
       <Filter>Core Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Npc.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

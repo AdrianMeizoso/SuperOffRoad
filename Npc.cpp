@@ -1,27 +1,39 @@
 #include "Globals.h"
 #include "Application.h"
-#include "Player.h"
+#include "Npc.h"
+#include "Point.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "ModuleParticles.h"
 #include "ModuleRender.h"
 #include "ModuleCollision.h"
 #include "ModuleFadeToBlack.h"
+#include <cmath>
 
+fPoint Npc::PathFollowing(){
+	fPoint target;
 
-float radiansFromDegrees(float deg)
-{
-	return deg*(M_PI / 180.0f);
+	if (path != nullptr) {
+		target = path->nodes[currentNode];
+
+		if (position.DistanceTo(target) <= 50) {
+
+			currentNode += 1;
+
+			LOG("Llegue");
+
+			if (currentNode >= path->nodes.size()) {
+				currentNode = 0;
+			}
+		}
+	}
+
+	return target;
 }
 
-float degreesFromRadians(float rad)
+Npc::Npc(int x, int y, TypeNpc type) : x(x), y(y), type(type)
 {
-	return rad / (M_PI / 180.0f);
-}
-
-Player::Player()
-{
-	LOG("Loading player");
+	LOG("Loading npc");
 
 	// input: x, y, w, h
 
@@ -59,7 +71,7 @@ Player::Player()
 	rotationCarSprites.push_back({ 904, 23, 46, 29 });
 	rotationCarSprites.push_back({ 855, 23, 46, 29 });
 	rotationCarSprites.push_back({ 808, 23, 46, 29 });
-	
+
 
 	//Sprites rotation on simple ground
 
@@ -95,11 +107,11 @@ Player::Player()
 	rotationShadowSprites.push_back({ 904, 647, 46, 29 });
 	rotationShadowSprites.push_back({ 855, 647, 46, 29 });
 	rotationShadowSprites.push_back({ 808, 647, 46, 29 });
-	
+
 
 	currentRect = rotationCarSprites[0];
 
-	graphics = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);
+	graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_azul.png", 0xBA, 0xFE, 0xCA);
 
 	speed = 0.f;
 	angle = 0.f;
@@ -107,10 +119,22 @@ Player::Player()
 	acc = 0.03f, dec = 0.05f;
 	turnSpeed = 3.f;
 
-	position.x = 367;
-	position.y = 392;
+	position.x = x;
+	position.y = y;
 
-	collider = App->collision->AddCollider({ (int)position.x, (int)position.y,46,29 }, PLAYER, this);
+
+	path = new Path();
+	path->addNode({ 238,374 });
+	path->addNode({ 307,188 });
+	path->addNode({ 497,182 });
+	path->addNode({ 497,115 });
+	path->addNode({ 158,109 });
+	path->addNode({ 107,255 });
+	path->addNode({ 512,274 });
+	path->addNode({ 471,377 });
+
+
+	//collider = App->collision->AddCollider({ (int)position.x, (int)position.y,46,29 }, PLAYER, this);
 
 	float ptemp = 0.f;
 
@@ -120,14 +144,24 @@ Player::Player()
 	}
 }
 
-Player::~Player()
+float radiansFromDegrees2(float deg)
 {
-	LOG("Unloading player");
+	return deg * (M_PI / 180.0f);
+}
+
+float degreesFromRadians2(float rad)
+{
+	return rad / (M_PI / 180.0f);
+}
+
+Npc::~Npc()
+{
+	LOG("Unloading npc");
 
 	App->textures->Unload(graphics);
 }
 
-float Player::GetAngleSprite(float angle)
+float Npc::GetAngleSprite(float angle)
 {
 	for (unsigned int i = 0; i < anglesRot.size(); i++)
 	{
@@ -149,13 +183,14 @@ float Player::GetAngleSprite(float angle)
 	return 0;
 }
 
-void Player::Paint()
+void Npc::Paint()
 {
+	/*
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && speed < maxSpeed)
 	{
 		if (speed < 0)
 		{
-			speed += acc*2;
+			speed += acc * 2;
 		}
 		else {
 			speed += acc;
@@ -172,7 +207,7 @@ void Player::Paint()
 				speed = 0;
 			}
 		}
-		else if (speed - dec < 0) 
+		else if (speed - dec < 0)
 		{
 			speed += dec;
 			if (speed > 0)
@@ -204,24 +239,131 @@ void Player::Paint()
 	{
 		//Player();
 	}
+	*/
+	
+	fPoint target = PathFollowing();
+	fPoint initPoint = position;
+	initPoint.x -= 1;
+
+	fPoint targetVector = target - position;
+	fPoint initVector = initPoint - position;
+
+	float angleTarget = degreesFromRadians2(acos((initVector.dotProd(targetVector)) 
+		/ (initVector.lenght()*targetVector.lenght()))); 
+
+	if (target.y > position.y)
+	{
+		angleTarget = 360 - angleTarget;
+	}
+
+	/**
+	fPoint target = PathFollowing();
+	float angleTarget = degreesFromRadians2(atan2(-target.x + position.x, target.y - position.y));
+	*/
+	
+
+	
+
+	
+	if (angleTarget != angle)
+	{
+		if (angleTarget > angle)
+		{
+			if (angleTarget - angle < 180)
+			{
+				angle += turnSpeed;
+				if (angle > 360)
+				{
+					angle = turnSpeed;
+				}
+			}
+			else
+			{
+				angle -= turnSpeed;
+				if (angle < 0)
+				{
+					angle = 360 - turnSpeed;
+				}
+
+			}
+		}
+		else
+		{
+			if (angle - angleTarget > 180)
+			{
+				angle += turnSpeed;
+				if (angle > 360)
+				{
+					angle = turnSpeed;
+				}
+			}
+			else
+			{
+				angle -= turnSpeed;
+				if (angle < 0)
+				{
+					angle = 360 - turnSpeed;
+				}
+
+			}
+
+		}
+	}
+	
+	LOG("angleTarget: %f, angle: %f", angleTarget, angle);
+
+	//angle = angleTarget;
+
+	if (speed < maxSpeed)
+	{
+		if (speed < 0)
+		{
+			speed += acc * 2;
+		}
+		else {
+			speed += acc;
+		}
+	}
+
+	/*
+	angle += turnSpeed;
+	if (angle > 360)
+	{
+		angle = turnSpeed;
+	}
+	*/
 
 	float angleCalc = angle;
 
-	angleCalc = GetAngleSprite(angle);
-
-
+	
 	//Calculation of deviation of perspective
 	if (angleCalc > 180)
 	{
-		angleCalc -= sinf(radiansFromDegrees(angleCalc)) * 26.58f;
+		angleCalc += sinf(radiansFromDegrees2(angleCalc)) * 26.58f;
 	}
 	else
 	{
-		angleCalc += sinf(radiansFromDegrees(angleCalc)) * 26.58f;
+		angleCalc -= (sinf(radiansFromDegrees2(angleCalc)) * 26.58f);
 	}
 	
-	float mx = -cosf(radiansFromDegrees(angleCalc))*speed;
-	float my = -sinf(radiansFromDegrees(angleCalc))*speed;
+
+	GetAngleSprite(angleCalc);
+
+	/*
+	
+	//Calculation of deviation of perspective
+	if (angleCalc > 180)
+	{
+		angleCalc += sinf(radiansFromDegrees2(angleCalc)) * 26.58f;
+	}
+	else
+	{
+		angleCalc -= sinf(radiansFromDegrees2(angleCalc)) * 26.58f;
+	}
+	*/
+
+	float mx = -cosf(radiansFromDegrees2(angle))*speed;
+	float my = -sinf(radiansFromDegrees2(angle))*speed;
 
 	position.x += mx;
 	position.y += my;
@@ -230,11 +372,11 @@ void Player::Paint()
 
 	currentRect = rotationCarSprites[curentSpritePos];
 
-	collider->SetPos((int)position.x, (int)position.y);
+	//collider->SetPos((int)position.x, (int)position.y);
 
 	// Draw everything --------------------------------------
 	App->renderer->Blit(graphics, position.x + 2.f - currentRect.w / 2, position.y + 2.f - currentRect.h / 2, &rotationShadowSprites[curentSpritePos]);
-	App->renderer->Blit(graphics, position.x - currentRect.w/2, position.y- currentRect.h / 2, &currentRect);
+	App->renderer->Blit(graphics, position.x - currentRect.w / 2, position.y - currentRect.h / 2, &currentRect);
 
 	if (position.x <= -7)
 	{
@@ -243,10 +385,10 @@ void Player::Paint()
 
 }
 
-void Player::CleanUp()
+void Npc::CleanUp()
 {
 }
 
-void Player::OnCollide(TypeCollider extType)
+void Npc::OnCollide(TypeCollider extType)
 {
 }

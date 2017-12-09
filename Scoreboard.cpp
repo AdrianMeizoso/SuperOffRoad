@@ -28,4 +28,4 @@ void Scoreboard::CleanUp()
 {
 }
 
-void Scoreboard::OnCollide(){ /*No collision*/ }
+void Scoreboard::OnCollide(TypeCollider extType){ /*No collision*/ }

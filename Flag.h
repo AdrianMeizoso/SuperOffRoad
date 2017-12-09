@@ -12,7 +12,7 @@ public:
 
 	void Paint() override;
 	void CleanUp() override;
-	void OnCollide() override;
+	void OnCollide(TypeCollider extType) override;
 
 public:
 	int x = 0;

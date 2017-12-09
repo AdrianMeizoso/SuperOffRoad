@@ -4,6 +4,7 @@
 #include "Module.h"
 
 class Flag;
+class Npc;
 class Scoreboard;
 class Player;
 
@@ -32,6 +33,7 @@ public:
 
 	Scoreboard* scoreboard;
 	Player* player;
+	Npc* npcAzul;
 	Flag* flag;
 	Flag* flag2;
 	Flag* flag3;

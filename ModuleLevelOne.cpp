@@ -10,6 +10,7 @@
 #include "Scoreboard.h"
 #include "Player.h"
 #include "Flag.h"
+#include "Npc.h"
 #include "ModuleReadFile.h"
 
 ModuleLevelOne::ModuleLevelOne(bool active) : Module(active)
@@ -56,6 +57,7 @@ bool ModuleLevelOne::Start()
 	heightMap = App->readFile->readHeightMap("Resources/Images/Level/LevelOne/HeightMap.txt");
 
 	player = new Player();
+	npcAzul = new Npc(376, 375, BLUE);
 	scoreboard = new Scoreboard(45, 310);
 	flag = new Flag(204, 298);
 	flag2 = new Flag(300, 305);
@@ -87,6 +89,7 @@ update_status ModuleLevelOne::Update()
 
 	//LOG("height = %d", getHeightInPosition());
 
+	npcAzul->Paint();
 	player->Paint();
 
 	App->renderer->Blit(background, 32, SCREEN_HEIGHT / 2 - rectAlter.h / 2, &rectAlter);

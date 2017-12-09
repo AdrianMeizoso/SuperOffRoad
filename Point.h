@@ -20,7 +20,7 @@ public:
 	// Operators ------------------------------------------------
 	Point operator -(const Point &v) const
 	{
-		p2Vector2 r;
+		Point r;
 
 		r.x = x - v.x;
 		r.y = y - v.y;
@@ -30,14 +30,24 @@ public:
 
 	Point operator + (const Point &v) const
 	{
-		p2Vector2 r;
+		Point r;
 
 		r.x = x + v.x;
 		r.y = y + v.y;
 
 		return(r);
 	}
+	
+	TYPE dotProd (const Point &v) const
+	{
+		return x * v.x + y * v.y;
+	}
 
+	TYPE lenght() const
+	{
+		return sqrt(x*x + y*y);
+	}
+	
 	const Point& operator -=(const Point &v)
 	{
 		x -= v.x;
