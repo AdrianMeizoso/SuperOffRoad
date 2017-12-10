@@ -21,6 +21,7 @@ public:
 	bool CleanUp();
 
 	int getHeightInPosition();
+	int getTextureInPosition();
 
 public:
 
@@ -34,11 +35,13 @@ public:
 	Scoreboard* scoreboard;
 	Player* player;
 	Npc* npcAzul;
+	Npc* npcYellow;
 	Flag* flag;
 	Flag* flag2;
 	Flag* flag3;
 
 	int* heightMap = nullptr;
+	int* textureMap = nullptr;
 };
 
 #endif // __MODULESCENESPACE_H__

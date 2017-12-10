@@ -46,6 +46,17 @@ int ModuleLevelOne::getHeightInPosition()
 	return heightMap[index];
 }
 
+int ModuleLevelOne::getTextureInPosition()
+{
+	int index = 0;
+	if (player->position.y > 0 && player->position.y < 449 && player->position.x > 0 && player->position.x < 640)
+	{
+		index = 448 * (int)player->position.x + (int)player->position.y;
+	}
+
+	return textureMap[index];
+}
+
 // Load assets
 bool ModuleLevelOne::Start()
 {
@@ -55,9 +66,12 @@ bool ModuleLevelOne::Start()
 	graphics = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);
 
 	heightMap = App->readFile->readHeightMap("Resources/Images/Level/LevelOne/HeightMap.txt");
+	textureMap = App->readFile->readTextureMap("Resources/Images/Level/LevelOne/textureMap.txt");
 
 	player = new Player();
-	npcAzul = new Npc(376, 375, BLUE);
+	npcAzul = new Npc(376, 375, BLUE, 50);
+	npcYellow = new Npc(425, 375, YELLOW, 40);
+	npcYellow->maxSpeed = 3.f;
 	scoreboard = new Scoreboard(45, 310);
 	flag = new Flag(204, 298);
 	flag2 = new Flag(300, 305);
@@ -87,9 +101,13 @@ update_status ModuleLevelOne::Update()
 	// Draw everything --------------------------------------
 	App->renderer->Blit(background, 0, SCREEN_HEIGHT / 2 - rect.h / 2, &rect);
 
-	//LOG("height = %d", getHeightInPosition());
+	if (getTextureInPosition() == 5)
+	{
+		App->particles->AddWaterParticle(*App->particles->water, player->position.x - 15, player->position.y - 10);
+	}
 
 	npcAzul->Paint();
+	npcYellow->Paint();
 	player->Paint();
 
 	App->renderer->Blit(background, 32, SCREEN_HEIGHT / 2 - rectAlter.h / 2, &rectAlter);

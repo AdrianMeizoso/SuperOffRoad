@@ -8,7 +8,6 @@
 #include "ModuleRender.h"
 #include "ModuleCollision.h"
 #include "ModuleFadeToBlack.h"
-#include <cmath>
 
 fPoint Npc::PathFollowing(){
 	fPoint target;
@@ -31,7 +30,7 @@ fPoint Npc::PathFollowing(){
 	return target;
 }
 
-Npc::Npc(int x, int y, TypeNpc type) : x(x), y(y), type(type)
+Npc::Npc(int x, int y, TypeNpc type, int radius) : x(x), y(y), type(type), radius(radius)
 {
 	LOG("Loading npc");
 
@@ -111,7 +110,21 @@ Npc::Npc(int x, int y, TypeNpc type) : x(x), y(y), type(type)
 
 	currentRect = rotationCarSprites[0];
 
-	graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_azul.png", 0xBA, 0xFE, 0xCA);
+	switch (type)
+	{
+	case GRAY:
+		graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_azul.png", 0xBA, 0xFE, 0xCA);
+		break;
+	case BLUE:
+		graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_azul.png", 0xBA, 0xFE, 0xCA);
+		break;
+	case YELLOW:
+		graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_amarillo.png", 0xBA, 0xFE, 0xCA);
+		break;
+	default:
+		break;
+	}
+	
 
 	speed = 0.f;
 	angle = 0.f;
@@ -134,7 +147,7 @@ Npc::Npc(int x, int y, TypeNpc type) : x(x), y(y), type(type)
 	path->addNode({ 471,377 });
 
 
-	//collider = App->collision->AddCollider({ (int)position.x, (int)position.y,46,29 }, PLAYER, this);
+	collider = App->collision->AddCollider({ (int)position.x, (int)position.y,46,29 }, NPC, this);
 
 	float ptemp = 0.f;
 
@@ -240,6 +253,7 @@ void Npc::Paint()
 		//Player();
 	}
 	*/
+
 	
 	fPoint target = PathFollowing();
 	fPoint initPoint = position;
@@ -251,17 +265,17 @@ void Npc::Paint()
 	float angleTarget = degreesFromRadians2(acos((initVector.dotProd(targetVector)) 
 		/ (initVector.lenght()*targetVector.lenght()))); 
 
+	
+
+	/*
+	fPoint target = PathFollowing();
+	float angleTarget = radiansFromDegrees2(atan2(-target.x + position.x, target.y - position.y));
+	*/
+	
 	if (target.y > position.y)
 	{
 		angleTarget = 360 - angleTarget;
 	}
-
-	/**
-	fPoint target = PathFollowing();
-	float angleTarget = degreesFromRadians2(atan2(-target.x + position.x, target.y - position.y));
-	*/
-	
-
 	
 
 	
@@ -310,7 +324,7 @@ void Npc::Paint()
 		}
 	}
 	
-	LOG("angleTarget: %f, angle: %f", angleTarget, angle);
+	//LOG("angleTarget: %f, angle: %f", angleTarget, angle);
 
 	//angle = angleTarget;
 
@@ -322,6 +336,13 @@ void Npc::Paint()
 		}
 		else {
 			speed += acc;
+		}
+	}
+	else if (speed > maxSpeed) {
+		speed -= dec;
+		if (speed < maxSpeed)
+		{
+			speed = maxSpeed;
 		}
 	}
 
@@ -372,7 +393,7 @@ void Npc::Paint()
 
 	currentRect = rotationCarSprites[curentSpritePos];
 
-	//collider->SetPos((int)position.x, (int)position.y);
+	collider->SetPos((int)position.x, (int)position.y);
 
 	// Draw everything --------------------------------------
 	App->renderer->Blit(graphics, position.x + 2.f - currentRect.w / 2, position.y + 2.f - currentRect.h / 2, &rotationShadowSprites[curentSpritePos]);
@@ -391,4 +412,8 @@ void Npc::CleanUp()
 
 void Npc::OnCollide(TypeCollider extType)
 {
+	if (extType == PLAYER)
+	{
+		//speed *= -1;
+	}
 }

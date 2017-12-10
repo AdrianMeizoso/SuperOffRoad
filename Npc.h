@@ -13,7 +13,7 @@ enum TypeNpc { GRAY, BLUE, YELLOW };
 class Npc : public Entity
 {
 public:
-	Npc(int x, int y, TypeNpc type);
+	Npc(int x, int y, TypeNpc type, int radius);
 	~Npc();
 
 	void Paint() override;
@@ -44,13 +44,14 @@ public:
 
 	float speed = 0.f;
 	float angle = 0.f;
-	float maxSpeed = 12.0f;
-	float acc = 0.2f;
-	float dec = 0.3f;
-	float turnSpeed = 0.08f;
+	float maxSpeed = 0.f;
+	float acc = 0.f;
+	float dec = 0.f;
+	float turnSpeed = 0.f;
 	int height = 0;
+	int radius = 0;
 
-	float angleTarget = 0;
+	float angleTarget = 0.f;
 
 	int curentSpritePos = 0;
 };
