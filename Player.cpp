@@ -151,14 +151,24 @@ float Player::GetAngleSprite(float angle)
 
 void Player::Paint()
 {
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && speed < maxSpeed)
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
 	{
-		if (speed < 0)
+		if (speed < maxSpeed)
 		{
-			speed += acc*2;
+			if (speed < 0)
+			{
+				speed += acc * 2;
+			}
+			else {
+				speed += acc;
+			}
 		}
-		else {
-			speed += acc;
+		else if (speed > maxSpeed) {
+			speed -= dec;
+			if (speed < maxSpeed)
+			{
+				speed = maxSpeed;
+			}
 		}
 	}
 
@@ -200,9 +210,10 @@ void Player::Paint()
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
 	{
 		//Player();
+		speed = 6;
 	}
 
 	float angleCalc = angle;
@@ -249,4 +260,8 @@ void Player::CleanUp()
 
 void Player::OnCollide(TypeCollider extType)
 {
+	if (extType == NPC)
+	{
+		//speed *= -1;
+	}
 }
