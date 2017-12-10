@@ -5,6 +5,10 @@
 #include "ModuleRender.h"
 #include "ModuleCollision.h"
 
+#include "SDL\include\SDL.h"
+
+
+
 Flag::Flag(int x, int y) : x(x), y(y)
 {
 	idle.frames.push_back({ 394, 6448, 14, 32 }); //Idle
@@ -27,11 +31,16 @@ Flag::Flag(int x, int y) : x(x), y(y)
 
 	small.frames.push_back({ 624, 6448, 10, 32 }); //Small Movement
 	small.frames.push_back({ 656, 6448, 14, 32 });
-	small.speed = 0.1f;
+	small.frames.push_back({ 876, 6448, 10, 32 });
+	small.frames.push_back({ 896, 6448, 14, 32 });
+	small.speed = 0.08f;
+	large.loop = true;
 
 	background = App->textures->LoadWithColorKey("Resources/Images/Level/Levels2.png", 0xBA, 0xFE, 0xCA);
 
 	App->collision->AddCollider({x,y,10,20}, FLAG, this);
+
+	state = DISABLE;
 }
 
 
@@ -41,12 +50,53 @@ Flag::~Flag()
 
 void Flag::Paint()
 {
-	if (active)
+	if (state == LARGE)
 	{
-		int xRelative = x - (large.GetCurrentFrame().w / 2);
-		int yRelative = y - large.GetCurrentFrame().h;
+		if (firstTime)
+		{
+			firstTime = false;
+			start_time = SDL_GetTicks();
+			total_time = (Uint32)(3.0f * 1000.0f);
+		}
 
-		App->renderer->Blit(background, xRelative, yRelative, &(large.GetCurrentFrame()));
+		Uint32 now = SDL_GetTicks() - start_time;
+
+		if (now < total_time)
+		{
+			int xRelative = x - (large.GetCurrentFrame().w / 2);
+			int yRelative = y - large.GetCurrentFrame().h;
+
+			App->renderer->Blit(background, xRelative, yRelative, &(large.GetCurrentFrame()));
+		}
+		else {
+			state = SMALL;
+			firstTime = true;
+		}
+		
+
+	}
+	else if (state == SMALL)
+	{
+		if (firstTime)
+		{
+			firstTime = false;
+			start_time = SDL_GetTicks();
+			total_time = (Uint32)(1.0f * 1000.0f);
+		}
+
+		Uint32 now = SDL_GetTicks() - start_time;
+
+		if (now < total_time)
+		{
+			int xRelative = x - (small.GetCurrentFrame().w / 2);
+			int yRelative = y - small.GetCurrentFrame().h;
+
+			App->renderer->Blit(background, xRelative, yRelative, &(small.GetCurrentFrame()));
+		}
+		else {
+			state = DISABLE;
+			firstTime = true;
+		}
 	}
 	else
 	{
@@ -63,5 +113,8 @@ void Flag::CleanUp()
 
 void Flag::OnCollide(TypeCollider extType)
 {
-	active = true;
+	if (state == DISABLE)
+	{
+		state = LARGE;
+	}
 }

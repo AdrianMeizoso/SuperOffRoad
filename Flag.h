@@ -4,6 +4,8 @@
 
 struct SDL_Texture;
 
+enum State { DISABLE, LARGE, SMALL };
+
 class Flag : public Entity
 {
 public:
@@ -19,6 +21,7 @@ public:
 	int y = 0;
 
 	bool active = false;
+	bool firstTime = true;
 
 	SDL_Texture* background = nullptr;
 
@@ -29,5 +32,10 @@ public:
 	Animation* currentAnimation;
 
 	Collider* flagCollider;
+
+	Uint32 start_time = 0;
+	Uint32 total_time = 0;
+	
+	State state;
 };
 
