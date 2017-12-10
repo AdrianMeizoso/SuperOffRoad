@@ -8,7 +8,7 @@
 // Example: lasers should not collide with lasers but should collider with walls
 // enemy shots will collide with other enemies ? and against walls ?
 
-enum TypeCollider { PLAYER, FLAG };
+enum TypeCollider { PLAYER, FLAG, NPC };
 
 struct Collider
 {
@@ -64,8 +64,9 @@ private:
 	bool debug = false;
 
 	//PLAYER FLAG
-	bool collisionMatrix[2][2] = {	{ false, true },
-									{ true, false }};
+	bool collisionMatrix[3][3] = { { false, true, false },
+									{ true, false, true },
+									{ true, true, false } };
 };
 
 #endif // __ModuleCollision_H__

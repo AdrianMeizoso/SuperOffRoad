@@ -8,6 +8,8 @@
 #include "Point.h"
 #include "ModuleCollision.h"
 
+enum TypeParticle { WATER, DUST };
+
 struct SDL_Texture;
 
 struct Particle
@@ -17,8 +19,9 @@ struct Particle
 	iPoint position = { 0, 0 };
 	Animation anim;
 
-	// TODO 11: Add an optional collider to each particle
-
+	int speed = 0;
+	int timeToDelete = 0;
+	TypeParticle typeParticle;
 
 	Particle();
 	Particle(const Particle& p);
@@ -38,7 +41,7 @@ public:
 	update_status Update(); // draw
 	bool CleanUp();
 
-	void AddParticle(const Particle& particle, int x, int y); // feel free to expand this call
+	void AddWaterParticle(const Particle& particle, int x, int y); // feel free to expand this call
 
 private:
 
@@ -48,6 +51,7 @@ private:
 public:
 
 	// prototype particles go here ...
+	Particle* water;
 };
 
 #endif // __MODULEPARTICLES_H__
