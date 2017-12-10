@@ -11,5 +11,6 @@ public:
 	~ModuleReadFile();
 
 	int* readHeightMap(const std::string path);
+	int* readTextureMap(const std::string path);
 };
 

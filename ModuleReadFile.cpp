@@ -18,7 +18,6 @@ int* ModuleReadFile::readHeightMap(const std::string path)
 	std::string value;
 
 	int* heightMap = new int[SCREEN_HEIGHT*SCREEN_WIDTH];
-	//memset(heightMap, 0, SCREEN_HEIGHT*SCREEN_WIDTH);
 	std::fill_n(heightMap, SCREEN_HEIGHT*SCREEN_WIDTH, 5);
 	
 	unsigned long counter = 0;
@@ -35,6 +34,30 @@ int* ModuleReadFile::readHeightMap(const std::string path)
 	
 
 	return heightMap;
+}
+
+int* ModuleReadFile::readTextureMap(const std::string path)
+{
+	std::ifstream file(path);
+	std::string value;
+
+	int* textureMap = new int[SCREEN_HEIGHT*SCREEN_WIDTH];
+	memset(textureMap, 0, sizeof(int)*(SCREEN_HEIGHT*SCREEN_WIDTH));
+
+	unsigned long counter = 0;
+
+	while (!file.eof())
+	{
+		getline(file, value, ',');
+		if (value != "0")
+		{
+			textureMap[counter] = stoi(value);
+		}
+		++counter;
+	}
+
+
+	return textureMap;
 }
 
 
