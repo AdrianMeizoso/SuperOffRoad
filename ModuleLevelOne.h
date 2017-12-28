@@ -7,6 +7,7 @@ class Flag;
 class Npc;
 class Scoreboard;
 class Player;
+class FlagMen;
 
 struct SDL_Texture;
 
@@ -39,6 +40,8 @@ public:
 	Flag* flag;
 	Flag* flag2;
 	Flag* flag3;
+
+	FlagMen* flagMen;
 
 	int* heightMap = nullptr;
 	int* textureMap = nullptr;

@@ -75,6 +75,9 @@
     <ClCompile Include="Npc.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="FlagMen.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleAudio.h">
@@ -148,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="Path.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="FlagMen.h">
+      <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

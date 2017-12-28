@@ -11,6 +11,7 @@
 #include "Player.h"
 #include "Flag.h"
 #include "Npc.h"
+#include "FlagMen.h"
 #include "ModuleReadFile.h"
 
 ModuleLevelOne::ModuleLevelOne(bool active) : Module(active)
@@ -76,6 +77,9 @@ bool ModuleLevelOne::Start()
 	flag = new Flag(204, 298);
 	flag2 = new Flag(300, 305);
 	flag3 = new Flag(361, 212);
+	flagMen = new FlagMen(328, 405);
+
+	flagMen->active = true;
 
 	return true;
 }
@@ -115,6 +119,8 @@ update_status ModuleLevelOne::Update()
 	flag->Paint();
 	flag2->Paint();
 	flag3->Paint();
+
+	flagMen->Paint();
 
 	App->renderer->Blit(graphics, SCREEN_WIDTH / 2 - rectTitleLevel.w / 2, 16, &rectTitleLevel);
 
