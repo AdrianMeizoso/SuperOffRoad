@@ -7,8 +7,8 @@ public:
 
 	virtual ~Entity(){}
 
-	virtual void Paint() = 0;
-	virtual void CleanUp() = 0;
-	virtual void OnCollide(TypeCollider extType) override = 0;
+	virtual void Paint() {};
+	virtual void CleanUp() {};
+	virtual void OnCollide(Collider* extType) override {};
 };
 

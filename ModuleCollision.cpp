@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 #include "ModuleCollision.h"
+#include "Entity.h"
 
 using namespace std;
 
@@ -28,6 +29,7 @@ update_status ModuleCollision::PreUpdate()
 			++it;
 	}
 
+
 	return UPDATE_CONTINUE;
 }
 
@@ -47,8 +49,8 @@ update_status ModuleCollision::Update()
 			{
 				if ((*iti)->CheckCollision((*itj)->rect))
 				{
-					if ((*iti)->listener != nullptr)((*iti)->listener)->OnCollide((*itj)->typeCollider);
-					if ((*itj)->listener != nullptr)((*itj)->listener)->OnCollide((*iti)->typeCollider);
+					if ((*iti)->listener != nullptr)((*iti)->listener)->OnCollide(*itj);
+					if ((*itj)->listener != nullptr)((*itj)->listener)->OnCollide(*iti);
 				}
 			}
 		}
@@ -83,10 +85,11 @@ bool ModuleCollision::CleanUp()
 	return true;
 }
 
-Collider* ModuleCollision::AddCollider(const SDL_Rect& rect, TypeCollider typecollider, Collider::CListener* listener)
+Collider* ModuleCollision::AddCollider(const SDL_Rect& rect, TypeCollider typecollider, Collider::CListener* listener, Entity* entity)
 {
 	Collider* ret = new Collider(rect, typecollider);
 	ret->listener = listener;
+	ret->entity = entity;
 
 	colliders.push_back(ret);
 

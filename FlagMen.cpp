@@ -42,7 +42,3 @@ void FlagMen::Paint()
 void FlagMen::CleanUp()
 {
 }
-
-void FlagMen::OnCollide(TypeCollider extType)
-{
-}

@@ -4,9 +4,12 @@
 #include<list>
 #include "Module.h"
 
+class Entity;
+
 // TODO 9: Create a matrix of game specific types of collision for early discard
 // Example: lasers should not collide with lasers but should collider with walls
 // enemy shots will collide with other enemies ? and against walls ?
+
 
 enum TypeCollider { PLAYER, FLAG, NPC };
 
@@ -15,6 +18,7 @@ struct Collider
 	SDL_Rect rect = { 0,0,0,0 };
 	bool to_delete = false;
 	TypeCollider typeCollider;
+	Entity* entity;
 
 	// TODO 10: Add a way to notify other classes that a collision happened
 
@@ -22,7 +26,7 @@ struct Collider
 	{
 		public:
 
-		virtual void OnCollide(TypeCollider extType)
+		virtual void OnCollide(Collider* extType)
 		{
 			LOG("Nothing Collide");
 		}
@@ -55,7 +59,7 @@ public:
 
 	bool CleanUp();
 
-	Collider* AddCollider(const SDL_Rect& rect, TypeCollider typeCollider, Collider::CListener* listener);
+	Collider* AddCollider(const SDL_Rect& rect, TypeCollider typeCollider, Collider::CListener* listener, Entity* entity);
 	void DebugDraw();
 
 private:
@@ -63,8 +67,8 @@ private:
 	std::list<Collider*> colliders;
 	bool debug = false;
 
-	//PLAYER FLAG
-	bool collisionMatrix[3][3] = { { false, true, false },
+	//PLAYER FLAG NPC
+	bool collisionMatrix[3][3] = { { false, true, true },
 									{ true, false, true },
 									{ true, true, false } };
 };

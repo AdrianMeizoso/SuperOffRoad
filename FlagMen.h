@@ -12,7 +12,6 @@ public:
 
 	void Paint() override;
 	void CleanUp() override;
-	void OnCollide(TypeCollider extType) override;
 
 	int x = 0;
 	int y = 0;

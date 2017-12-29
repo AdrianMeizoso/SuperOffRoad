@@ -8,6 +8,7 @@
 #include "ModuleRender.h"
 #include "ModuleCollision.h"
 #include "ModuleFadeToBlack.h"
+#include "Player.h"
 
 fPoint Npc::PathFollowing(){
 	fPoint target;
@@ -147,7 +148,7 @@ Npc::Npc(int x, int y, TypeNpc type, int radius) : x(x), y(y), type(type), radiu
 	path->addNode({ 471,377 });
 
 
-	collider = App->collision->AddCollider({ (int)position.x, (int)position.y,46,29 }, NPC, this);
+	collider = App->collision->AddCollider({ (int)position.x, (int)position.y,46,29 }, NPC, this, this);
 
 	float ptemp = 0.f;
 
@@ -410,9 +411,9 @@ void Npc::CleanUp()
 {
 }
 
-void Npc::OnCollide(TypeCollider extType)
+void Npc::OnCollide(Collider* extType)
 {
-	if (extType == PLAYER)
+	if (extType->typeCollider == PLAYER)
 	{
 		//speed *= -1;
 	}

@@ -27,5 +27,3 @@ void Scoreboard::Paint()
 void Scoreboard::CleanUp()
 {
 }
-
-void Scoreboard::OnCollide(TypeCollider extType){ /*No collision*/ }

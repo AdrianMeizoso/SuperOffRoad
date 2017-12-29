@@ -4,6 +4,7 @@
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleCollision.h"
+#include "Player.h"
 
 #include "SDL\include\SDL.h"
 
@@ -38,7 +39,7 @@ Flag::Flag(int x, int y) : x(x), y(y)
 
 	background = App->textures->LoadWithColorKey("Resources/Images/Level/Levels2.png", 0xBA, 0xFE, 0xCA);
 
-	App->collision->AddCollider({x,y,10,20}, FLAG, this);
+	App->collision->AddCollider({x,y,10,20}, FLAG, this, this);
 
 	state = DISABLE;
 }
@@ -111,10 +112,17 @@ void Flag::CleanUp()
 {
 }
 
-void Flag::OnCollide(TypeCollider extType)
+void Flag::OnCollide(Collider* extType)
 {
-	if (state == DISABLE)
+
+	if (extType->typeCollider == PLAYER)
 	{
-		state = LARGE;
+		Player* p = (Player*)extType->entity;
+		LOG("Datos del player: %f", p->angle);
+
+		if (state == DISABLE)
+		{
+			state = LARGE;
+		}
 	}
 }

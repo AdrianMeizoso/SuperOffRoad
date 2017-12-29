@@ -14,7 +14,7 @@ public:
 
 	void Paint() override;
 	void CleanUp() override;
-	void OnCollide(TypeCollider extType) override;
+	void OnCollide(Collider* extType) override;
 
 private:
 	float GetAngleSprite(float angle);

@@ -110,7 +110,7 @@ Player::Player()
 	position.x = 367;
 	position.y = 392;
 
-	collider = App->collision->AddCollider({ (int)position.x, (int)position.y,46,29 }, PLAYER, this);
+	collider = App->collision->AddCollider({ (int)position.x, (int)position.y,46,29 }, PLAYER, this, this);
 
 	float ptemp = 0.f;
 
@@ -258,9 +258,9 @@ void Player::CleanUp()
 {
 }
 
-void Player::OnCollide(TypeCollider extType)
+void Player::OnCollide(Collider* extType)
 {
-	if (extType == NPC)
+	if (extType->typeCollider == NPC)
 	{
 		//speed *= -1;
 	}
