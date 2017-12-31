@@ -70,9 +70,16 @@ bool ModuleLevelOne::Start()
 	textureMap = App->readFile->readTextureMap("Resources/Images/Level/LevelOne/textureMap.txt");
 
 	player = new Player();
+	/*
 	npcAzul = new Npc(376, 375, BLUE, 50);
 	npcYellow = new Npc(425, 375, YELLOW, 40);
-	npcYellow->maxSpeed = 3.f;
+	*/
+	
+	//npcYellow->maxSpeed = 3.f;
+
+	npcAzul = new Npc(376, 100, BLUE, 50);
+	npcAzul->angle = 180.f;
+
 	scoreboard = new Scoreboard(45, 310);
 	flag = new Flag(204, 298);
 	flag2 = new Flag(300, 305);
@@ -111,7 +118,7 @@ update_status ModuleLevelOne::Update()
 	}
 
 	npcAzul->Paint();
-	npcYellow->Paint();
+//	npcYellow->Paint();
 	player->Paint();
 
 	App->renderer->Blit(background, 32, SCREEN_HEIGHT / 2 - rectAlter.h / 2, &rectAlter);

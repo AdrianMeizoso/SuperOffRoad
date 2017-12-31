@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "Player.h"
+#include "Npc.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "ModuleParticles.h"
@@ -8,13 +9,12 @@
 #include "ModuleCollision.h"
 #include "ModuleFadeToBlack.h"
 
-
-float radiansFromDegrees(float deg)
+float radiansFromDegrees2(float deg)
 {
-	return deg*(M_PI / 180.0f);
+	return deg * (M_PI / 180.0f);
 }
 
-float degreesFromRadians(float rad)
+float degreesFromRadians2(float rad)
 {
 	return rad / (M_PI / 180.0f);
 }
@@ -110,7 +110,7 @@ Player::Player()
 	position.x = 367;
 	position.y = 392;
 
-	collider = App->collision->AddCollider({ (int)position.x, (int)position.y,46,29 }, PLAYER, this, this);
+	collider = App->collision->AddCollider({ (int)position.x - 13, (int)position.y - 10, 28, 14 }, PLAYER, this, this);
 
 	float ptemp = 0.f;
 
@@ -224,15 +224,15 @@ void Player::Paint()
 	//Calculation of deviation of perspective
 	if (angleCalc > 180)
 	{
-		angleCalc -= sinf(radiansFromDegrees(angleCalc)) * 26.58f;
+		angleCalc -= sinf(radiansFromDegrees2(angleCalc)) * 26.58f;
 	}
 	else
 	{
-		angleCalc += sinf(radiansFromDegrees(angleCalc)) * 26.58f;
+		angleCalc += sinf(radiansFromDegrees2(angleCalc)) * 26.58f;
 	}
 	
-	float mx = -cosf(radiansFromDegrees(angleCalc))*speed;
-	float my = -sinf(radiansFromDegrees(angleCalc))*speed;
+	float mx = -cosf(radiansFromDegrees2(angleCalc))*speed;
+	float my = -sinf(radiansFromDegrees2(angleCalc))*speed;
 
 	position.x += mx;
 	position.y += my;
@@ -241,7 +241,7 @@ void Player::Paint()
 
 	currentRect = rotationCarSprites[curentSpritePos];
 
-	collider->SetPos((int)position.x, (int)position.y);
+	collider->SetPos((int)position.x - 13, (int)position.y - 10);
 
 	// Draw everything --------------------------------------
 	App->renderer->Blit(graphics, position.x + 2.f - currentRect.w / 2, position.y + 2.f - currentRect.h / 2, &rotationShadowSprites[curentSpritePos]);
@@ -258,10 +258,67 @@ void Player::CleanUp()
 {
 }
 
-void Player::OnCollide(Collider* extType)
+void Player::OnCollide(Collider* extType, CollisionState colState)
 {
-	if (extType->typeCollider == NPC)
+	if (colState == COLL_FIRST)
 	{
-		//speed *= -1;
+		if (extType->typeCollider == NPC)
+		{
+			Npc* n = (Npc*)extType->entity;
+
+			if ((angle - n->angleCalc > 155 && angle - n->angleCalc < 205) ||
+				(n->angleCalc - angle > 155 && n->angleCalc - angle < 205)) {
+				if (speed != 0)
+				{
+					speed *= -1;
+				}
+			}
+			else if (angle - n->angleCalc > 335 || (angle - n->angleCalc < 25 && angle - n->angleCalc >= 0) ||
+				n->angleCalc - angle > 335 || (n->angleCalc - angle < 25 && n->angleCalc - angle >= 0))
+			{
+				if (n->speed > speed)
+				{
+					speed = n->speed;
+				}
+			}
+			else {
+				if (speed == 0)
+				{
+
+				}
+			}
+		}
+	}
+	else
+	{
+		if (extType->typeCollider == NPC )
+		{
+			Npc* n = (Npc*)extType->entity;
+
+			if (angle - n->angleCalc > 335 || (angle - n->angleCalc < 25 && angle - n->angleCalc >= 0) ||
+				n->angleCalc - angle > 335 || (n->angleCalc - angle < 25 && n->angleCalc - angle >= 0))
+			{
+				if (n->speed > speed)
+				{
+					speed = n->speed;
+				}
+			}
+			else {
+				if (speed != 0)
+				{
+					int angleForcol = angle + 180;
+					angleForcol = angleForcol % 360;
+
+					float mx = -cosf(radiansFromDegrees2(angleForcol));
+					float my = -sinf(radiansFromDegrees2(angleForcol));
+
+					position.x += mx;
+					position.y += my;
+				}
+			}
+			
+
+			
+		}
 	}
 }

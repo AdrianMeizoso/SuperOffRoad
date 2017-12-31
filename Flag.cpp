@@ -39,7 +39,7 @@ Flag::Flag(int x, int y) : x(x), y(y)
 
 	background = App->textures->LoadWithColorKey("Resources/Images/Level/Levels2.png", 0xBA, 0xFE, 0xCA);
 
-	App->collision->AddCollider({x,y,10,20}, FLAG, this, this);
+	App->collision->AddCollider({x - 4 ,y - 12,10,10}, FLAG, this, this);
 
 	state = DISABLE;
 }
@@ -110,19 +110,13 @@ void Flag::Paint()
 
 void Flag::CleanUp()
 {
+
 }
 
-void Flag::OnCollide(Collider* extType)
+void Flag::OnCollide(Collider* extType, CollisionState colState)
 {
-
-	if (extType->typeCollider == PLAYER)
+	if (state == DISABLE)
 	{
-		Player* p = (Player*)extType->entity;
-		LOG("Datos del player: %f", p->angle);
-
-		if (state == DISABLE)
-		{
-			state = LARGE;
-		}
+		state = LARGE;
 	}
 }

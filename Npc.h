@@ -18,7 +18,7 @@ public:
 
 	void Paint() override;
 	void CleanUp() override;
-	void OnCollide(Collider* extType) override;
+	void OnCollide(Collider* extType, CollisionState colState) override;
 
 private:
 	float GetAngleSprite(float angle);
@@ -50,6 +50,7 @@ public:
 	float turnSpeed = 0.f;
 	int height = 0;
 	int radius = 0;
+	float angleCalc = 0.f;
 
 	float angleTarget = 0.f;
 

@@ -9,6 +9,6 @@ public:
 
 	virtual void Paint() {};
 	virtual void CleanUp() {};
-	virtual void OnCollide(Collider* extType) override {};
+	virtual void OnCollide(Collider* extType, CollisionState colState) override {};
 };
 

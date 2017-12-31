@@ -38,6 +38,7 @@ update_status ModuleCollision::Update()
 	// TODO 8: Check collisions between all colliders. 
 	// After making it work, review that you are doing the minumum checks possible
 
+
 	list<Collider*>::iterator iti = colliders.begin();
 	for (int i = 0; i < (int)(colliders.size() - 1); ++i)
 	{
@@ -49,11 +50,20 @@ update_status ModuleCollision::Update()
 			{
 				if ((*iti)->CheckCollision((*itj)->rect))
 				{
-					if ((*iti)->listener != nullptr)((*iti)->listener)->OnCollide(*itj);
-					if ((*itj)->listener != nullptr)((*itj)->listener)->OnCollide(*iti);
+					if (collisionStateMatrix[i][j] == COLL_IDLE)
+						collisionStateMatrix[i][j] = COLL_FIRST;
+					else
+						collisionStateMatrix[i][j] = COLL_REPEAT;
+
+					if ((*iti)->listener != nullptr)((*iti)->listener)->OnCollide(*itj, collisionStateMatrix[i][j]);
+					if ((*itj)->listener != nullptr)((*itj)->listener)->OnCollide(*iti, collisionStateMatrix[i][j]);
+				}
+				else
+				{
+					collisionStateMatrix[i][j] = COLL_IDLE;
 				}
 			}
-		}
+		};
 		++iti;
 	}
 
@@ -63,13 +73,15 @@ update_status ModuleCollision::Update()
 	if(debug == true)
 		DebugDraw();
 
+	
+
 	return UPDATE_CONTINUE;
 }
 
 void ModuleCollision::DebugDraw()
 {
 	for (list<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it)
-		App->renderer->DrawQuad((*it)->rect, 255, 0, 0, 80);
+		App->renderer->DrawQuad((*it)->rect, 0, 255, 0, 80);
 }
 
 // Called before quitting
@@ -102,10 +114,13 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 {
 	// TODO 7: Create by hand (avoid consulting the internet) a simple collision test
 	// Return true if rectangle argument "r" if intersecting with "this->rect"
-
+/*
 	if (((r.y - r.h) > rect.y)) return false;
 	if ((r.y < (rect.y - rect.h))) return false;
 	if ((r.x >(rect.x + rect.w))) return false;
 	if (((r.x + r.w) < rect.x)) return false;
-	return true;
+	*/
+
+	return SDL_HasIntersection(&r, &rect);
+	//return true;
 }

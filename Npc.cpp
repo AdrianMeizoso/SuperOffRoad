@@ -10,6 +10,16 @@
 #include "ModuleFadeToBlack.h"
 #include "Player.h"
 
+float radiansFromDegrees(float deg)
+{
+	return deg * (M_PI / 180.0f);
+}
+
+float degreesFromRadians(float rad)
+{
+	return rad / (M_PI / 180.0f);
+}
+
 fPoint Npc::PathFollowing(){
 	fPoint target;
 
@@ -20,7 +30,7 @@ fPoint Npc::PathFollowing(){
 
 			currentNode += 1;
 
-			LOG("Llegue");
+			//LOG("Llegue");
 
 			if (currentNode >= path->nodes.size()) {
 				currentNode = 0;
@@ -113,17 +123,17 @@ Npc::Npc(int x, int y, TypeNpc type, int radius) : x(x), y(y), type(type), radiu
 
 	switch (type)
 	{
-	case GRAY:
-		graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_azul.png", 0xBA, 0xFE, 0xCA);
-		break;
-	case BLUE:
-		graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_azul.png", 0xBA, 0xFE, 0xCA);
-		break;
-	case YELLOW:
-		graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_amarillo.png", 0xBA, 0xFE, 0xCA);
-		break;
-	default:
-		break;
+		case GRAY:
+			graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_azul.png", 0xBA, 0xFE, 0xCA);
+			break;
+		case BLUE:
+			graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_azul.png", 0xBA, 0xFE, 0xCA);
+			break;
+		case YELLOW:
+			graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_amarillo.png", 0xBA, 0xFE, 0xCA);
+			break;
+		default:
+			break;
 	}
 	
 
@@ -148,7 +158,7 @@ Npc::Npc(int x, int y, TypeNpc type, int radius) : x(x), y(y), type(type), radiu
 	path->addNode({ 471,377 });
 
 
-	collider = App->collision->AddCollider({ (int)position.x, (int)position.y,46,29 }, NPC, this, this);
+	collider = App->collision->AddCollider({ (int)position.x - 13, (int)position.y - 10, 28, 14 }, NPC, this, this);
 
 	float ptemp = 0.f;
 
@@ -158,15 +168,7 @@ Npc::Npc(int x, int y, TypeNpc type, int radius) : x(x), y(y), type(type), radiu
 	}
 }
 
-float radiansFromDegrees2(float deg)
-{
-	return deg * (M_PI / 180.0f);
-}
 
-float degreesFromRadians2(float rad)
-{
-	return rad / (M_PI / 180.0f);
-}
 
 Npc::~Npc()
 {
@@ -199,62 +201,6 @@ float Npc::GetAngleSprite(float angle)
 
 void Npc::Paint()
 {
-	/*
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && speed < maxSpeed)
-	{
-		if (speed < 0)
-		{
-			speed += acc * 2;
-		}
-		else {
-			speed += acc;
-		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_IDLE)
-	{
-		if (speed - dec > 0)
-		{
-			speed -= dec;
-			if (speed < 0)
-			{
-				speed = 0;
-			}
-		}
-		else if (speed - dec < 0)
-		{
-			speed += dec;
-			if (speed > 0)
-			{
-				speed = 0;
-			}
-		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		angle -= turnSpeed;
-		if (angle < 0)
-		{
-			angle = 360 - turnSpeed;
-		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		angle += turnSpeed;
-		if (angle > 360)
-		{
-			angle = turnSpeed;
-		}
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
-	{
-		//Player();
-	}
-	*/
-
 	
 	fPoint target = PathFollowing();
 	fPoint initPoint = position;
@@ -263,15 +209,10 @@ void Npc::Paint()
 	fPoint targetVector = target - position;
 	fPoint initVector = initPoint - position;
 
-	float angleTarget = degreesFromRadians2(acos((initVector.dotProd(targetVector)) 
+	float angleTarget = degreesFromRadians(acos((initVector.dotProd(targetVector)) 
 		/ (initVector.lenght()*targetVector.lenght()))); 
 
-	
 
-	/*
-	fPoint target = PathFollowing();
-	float angleTarget = radiansFromDegrees2(atan2(-target.x + position.x, target.y - position.y));
-	*/
 	
 	if (target.y > position.y)
 	{
@@ -325,9 +266,7 @@ void Npc::Paint()
 		}
 	}
 	
-	//LOG("angleTarget: %f, angle: %f", angleTarget, angle);
-
-	//angle = angleTarget;
+	
 
 	if (speed < maxSpeed)
 	{
@@ -347,45 +286,27 @@ void Npc::Paint()
 		}
 	}
 
-	/*
-	angle += turnSpeed;
-	if (angle > 360)
-	{
-		angle = turnSpeed;
-	}
-	*/
+	
 
-	float angleCalc = angle;
+	angleCalc = angle;
 
 	
 	//Calculation of deviation of perspective
 	if (angleCalc > 180)
 	{
-		angleCalc += sinf(radiansFromDegrees2(angleCalc)) * 26.58f;
+		angleCalc += sinf(radiansFromDegrees(angle)) * 26.58f;
 	}
 	else
 	{
-		angleCalc -= (sinf(radiansFromDegrees2(angleCalc)) * 26.58f);
+		angleCalc -= (sinf(radiansFromDegrees(angle)) * 26.58f);
 	}
 	
 
 	GetAngleSprite(angleCalc);
 
-	/*
-	
-	//Calculation of deviation of perspective
-	if (angleCalc > 180)
-	{
-		angleCalc += sinf(radiansFromDegrees2(angleCalc)) * 26.58f;
-	}
-	else
-	{
-		angleCalc -= sinf(radiansFromDegrees2(angleCalc)) * 26.58f;
-	}
-	*/
 
-	float mx = -cosf(radiansFromDegrees2(angle))*speed;
-	float my = -sinf(radiansFromDegrees2(angle))*speed;
+	float mx = -cosf(radiansFromDegrees(angle))*speed;
+	float my = -sinf(radiansFromDegrees(angle))*speed;
 
 	position.x += mx;
 	position.y += my;
@@ -394,16 +315,11 @@ void Npc::Paint()
 
 	currentRect = rotationCarSprites[curentSpritePos];
 
-	collider->SetPos((int)position.x, (int)position.y);
+	collider->SetPos((int)position.x - 13, (int)position.y - 6);
 
 	// Draw everything --------------------------------------
 	App->renderer->Blit(graphics, position.x + 2.f - currentRect.w / 2, position.y + 2.f - currentRect.h / 2, &rotationShadowSprites[curentSpritePos]);
 	App->renderer->Blit(graphics, position.x - currentRect.w / 2, position.y - currentRect.h / 2, &currentRect);
-
-	if (position.x <= -7)
-	{
-		speed *= -1;
-	}
 
 }
 
@@ -411,10 +327,60 @@ void Npc::CleanUp()
 {
 }
 
-void Npc::OnCollide(Collider* extType)
+void Npc::OnCollide(Collider* extType, CollisionState colState)
 {
-	if (extType->typeCollider == PLAYER)
+	if (colState == COLL_FIRST)
 	{
-		//speed *= -1;
+		if (extType->typeCollider == PLAYER)
+		{
+			//speed *= -1;
+			Player* p = (Player*)extType->entity;
+	
+			if ((angleCalc - p->angle > 155 && angleCalc - p->angle < 205) ||
+				 (p->angle - angleCalc > 155 && p->angle - angleCalc < 205)) {
+					speed *= -1;
+			}
+			else if (angleCalc - p->angle > 335 || (angleCalc - p->angle < 25 && angleCalc - p->angle >= 0)  ||
+				p->angle - angleCalc > 335 || (p->angle - angleCalc < 25 && p->angle - angleCalc >= 0)) 
+			{
+				if (p->speed > speed)
+				{
+					speed = p->speed;
+				}
+			}
+			else {
+				if (speed == 0)
+				{
+
+				}
+			}
+		}
+	}
+	else {
+		if (extType->typeCollider == PLAYER)
+		{
+			if (speed != 0)
+			{
+				int angleForcol = angleCalc + 180;
+				angleForcol = angleForcol % 360;
+
+				float mx = -cosf(radiansFromDegrees(angleForcol));
+				float my = -sinf(radiansFromDegrees(angleForcol));
+
+				position.x += mx;
+				position.y += my;
+
+			}
+			
+			Player* p = (Player*)extType->entity;
+			if (angleCalc - p->angle > 335 || (angleCalc - p->angle < 25 && angleCalc - p->angle >= 0) ||
+				p->angle - angleCalc > 335 || (p->angle - angleCalc < 25 && p->angle - angleCalc >= 0))
+			{
+				if (p->speed > speed)
+				{
+					speed = p->speed;
+				}
+			}
+		}
 	}
 }

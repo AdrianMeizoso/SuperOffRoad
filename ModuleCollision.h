@@ -13,6 +13,13 @@ class Entity;
 
 enum TypeCollider { PLAYER, FLAG, NPC };
 
+enum CollisionState
+{
+	COLL_IDLE = 0,
+	COLL_FIRST,
+	COLL_REPEAT
+};
+
 struct Collider
 {
 	SDL_Rect rect = { 0,0,0,0 };
@@ -26,7 +33,7 @@ struct Collider
 	{
 		public:
 
-		virtual void OnCollide(Collider* extType)
+		virtual void OnCollide(Collider* extType, CollisionState state)
 		{
 			LOG("Nothing Collide");
 		}
@@ -71,6 +78,8 @@ private:
 	bool collisionMatrix[3][3] = { { false, true, true },
 									{ true, false, true },
 									{ true, true, false } };
+
+	CollisionState collisionStateMatrix[3][3] = { COLL_IDLE };
 };
 
 #endif // __ModuleCollision_H__

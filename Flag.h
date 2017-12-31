@@ -14,7 +14,7 @@ public:
 
 	void Paint() override;
 	void CleanUp() override;
-	void OnCollide(Collider* extType) override;
+	void OnCollide(Collider* extType, CollisionState colState) override;
 
 public:
 	int x = 0;
