@@ -17,9 +17,6 @@ public:
 	void OnCollide(Collider* extType, CollisionState colState) override;
 
 public:
-	int x = 0;
-	int y = 0;
-
 	bool active = false;
 	bool firstTime = true;
 

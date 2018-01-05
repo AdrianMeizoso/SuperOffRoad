@@ -15,8 +15,6 @@ public:
 	void CleanUp() override;
 
 public:
-	int x = 0;
-	int y = 0;
 
 	SDL_Rect rect;
 	SDL_Texture* background = nullptr;

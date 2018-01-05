@@ -3,12 +3,17 @@
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
+#include "Npc.h"
+#include "Player.h"
 #include "ModuleFonts.h"
+
+#include "ModuleLevelOne.h"
+
 
 #include "SDL\include\SDL.h"
 
 
-Scoreboard::Scoreboard(int x, int y) : x(x), y(y)
+Scoreboard::Scoreboard(int x, int y) : Entity(x, y)
 {
 	rect.h = 62;
 	rect.w = 124;
@@ -32,25 +37,27 @@ void Scoreboard::Paint()
 	float time = now / 1000.0f;
 
 	//Print time
-	App->fonts->print(time, true, 69, 339, GRAY);
+	App->fonts->print(time, true, 69, 339, TEXTGRAY);
+
+	int lap = App->scene_levelOne->npcAzul->lap;
 
 	//Red lap
-	App->fonts->print(0, false, 69, 356, RED);
+	App->fonts->print(0, false, 69, 356, TEXTRED);
 	//Blue lap
-	App->fonts->print(0, false, 91, 356, BLUE);
+	App->fonts->print(App->scene_levelOne->npcAzul->lap, false, 91, 356, TEXTBLUE);
 	//Orange lap
-	App->fonts->print(0, false, 112, 356, ORANGE);
+	App->fonts->print(App->scene_levelOne->npcYellow->lap, false, 112, 356, TEXTORANGE);
 	//Gray lap
-	App->fonts->print(0, false, 135, 356, GRAY);
+	App->fonts->print(0, false, 135, 356, TEXTGRAY);
 
 	//Red nitros
-	App->fonts->print(0, true, 60, 374, RED);
+	App->fonts->print(App->scene_levelOne->player->nitros, true, 60, 374, TEXTRED);
 	//Blue nitros
-	App->fonts->print(0, true, 82, 374, BLUE);
+	App->fonts->print(App->scene_levelOne->npcAzul->nitros, true, 82, 374, TEXTBLUE);
 	//Orange nitros
-	App->fonts->print(0, true, 104, 374, ORANGE);
+	App->fonts->print(App->scene_levelOne->npcYellow->nitros, true, 104, 374, TEXTORANGE);
 	//Gray nitros
-	App->fonts->print(0, true, 127, 374, GRAY);
+	App->fonts->print(0, true, 127, 374, TEXTGRAY);
 
 }
 

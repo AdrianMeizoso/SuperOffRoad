@@ -38,6 +38,9 @@ public:
 	float turnSpeed = 0.08f;
 	int height = 0;
 
+	int lap = 0;
+	int nitros = 10;
+
 	int curentSpritePos = 0;
 };
 

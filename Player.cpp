@@ -210,10 +210,13 @@ void Player::Paint()
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
 	{
-		//Player();
-		speed = 6;
+		if (nitros > 0)
+		{
+			--nitros;
+			speed = 6;
+		}
 	}
 
 	float angleCalc = angle;

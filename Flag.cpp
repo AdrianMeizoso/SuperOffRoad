@@ -10,7 +10,7 @@
 
 
 
-Flag::Flag(int x, int y) : x(x), y(y)
+Flag::Flag(int x, int y) : Entity(x, y)
 {
 	idle.frames.push_back({ 394, 6448, 14, 32 }); //Idle
 	idle.speed = 0.08f;

@@ -5,10 +5,10 @@ struct SDL_Texture;
 
 enum TextColor
 {
-	GRAY = 0,
-	ORANGE = 1,
-	BLUE = 2,
-	RED = 3
+	TEXTGRAY = 0,
+	TEXTORANGE = 1,
+	TEXTBLUE = 2,
+	TEXTRED = 3
 };
 
 class ModuleFonts : public Module

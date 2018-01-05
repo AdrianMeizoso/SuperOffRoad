@@ -8,6 +8,7 @@
 #include "ModuleRender.h"
 #include "ModuleCollision.h"
 #include "ModuleFadeToBlack.h"
+#include "ModuleLevelOne.h"
 #include "Player.h"
 
 float radiansFromDegrees(float deg)
@@ -32,11 +33,14 @@ fPoint Npc::PathFollowing(){
 
 		target = path->nodes[currentNode];
 
-		if (position.DistanceTo(target) <= 50) {
+		if (position.DistanceTo(target) <= radius) {
+			if (currentNode == 0)
+			{
+				++lap;
+				App->scene_levelOne->DidLap();
+			}
 
-			currentNode += 1;
-
-			//LOG("Llegue");
+			currentNode += 1;	
 
 			if (currentNode >= path->nodes.size()) {
 				currentNode = 0;
@@ -55,7 +59,7 @@ void Npc::DebugDraw()
 		
 }
 
-Npc::Npc(int x, int y, TypeNpc type, int radius) : x(x), y(y), type(type), radius(radius)
+Npc::Npc(int x, int y, TypeNpc type, int radius) : Entity(x, y) , type(type), radius(radius)
 {
 	LOG("Loading npc");
 
@@ -162,6 +166,7 @@ Npc::Npc(int x, int y, TypeNpc type, int radius) : x(x), y(y), type(type), radiu
 
 
 	path = new Path();
+	path->addNode({ 346,378 });
 	path->addNode({ 238,374 });
 	path->addNode({ 307,188 });
 	path->addNode({ 497,182 });

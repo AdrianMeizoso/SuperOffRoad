@@ -40,9 +40,6 @@ public:
 
 	TypeNpc type;
 
-	int x = 0;
-	int y = 0;
-
 	float speed = 0.f;
 	float angle = 0.f;
 	float maxSpeed = 0.f;
@@ -56,6 +53,9 @@ public:
 	float angleTarget = 0.f;
 
 	int curentSpritePos = 0;
+
+	int lap = 0;
+	int nitros = 10;
 
 	bool debug = false;
 };
