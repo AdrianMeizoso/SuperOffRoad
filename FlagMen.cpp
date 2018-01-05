@@ -4,9 +4,9 @@
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 
+#include "SDL\include\SDL.h"
 
-
-FlagMen::FlagMen(int x, int y) : x(x), y(y)
+FlagMen::FlagMen(int x, int y) : Entity(x, y)
 {
 	run.frames.push_back({ 292, 716, 32, 20 });
 	run.frames.push_back({ 340, 714, 32, 22 });
@@ -33,10 +33,33 @@ void FlagMen::Paint()
 {
 	if (active)
 	{
-		int xRelative = x - (run.GetCurrentFrame().w / 2);
-		int yRelative = y - run.GetCurrentFrame().h;
+		if (firstTime)
+		{
+			firstTime = false;
+			start_time = SDL_GetTicks();
+			total_time = (Uint32)(1.0f * 3000.0f);
+		}
 
-		App->renderer->Blit(background, xRelative, yRelative, &(run.GetCurrentFrame()));
+		Uint32 now = SDL_GetTicks() - start_time;
+
+		if (now < total_time)
+		{
+			int xRelative = x - (run.GetCurrentFrame().w / 2);
+			int yRelative = y - run.GetCurrentFrame().h;
+
+			App->renderer->Blit(background, xRelative, yRelative, &(run.GetCurrentFrame()));
+		}
+		else {
+			active = false;
+			firstTime = true;
+		}
+	}
+	else
+	{
+		int xRelative = x - ((run.frames[0]).w / 2);
+		int yRelative = y - (run.frames[0]).h;
+
+		App->renderer->Blit(background, xRelative, yRelative, &(run.frames[0]));
 	}
 }
 void FlagMen::CleanUp()

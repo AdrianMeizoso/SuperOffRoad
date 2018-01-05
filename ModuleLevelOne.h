@@ -23,6 +23,7 @@ public:
 
 	int getHeightInPosition();
 	int getTextureInPosition();
+	void DidLap();
 
 public:
 

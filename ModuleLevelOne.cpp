@@ -58,6 +58,11 @@ int ModuleLevelOne::getTextureInPosition()
 	return textureMap[index];
 }
 
+void ModuleLevelOne::DidLap()
+{
+	flagMen->active = true;
+}
+
 // Load assets
 bool ModuleLevelOne::Start()
 {
@@ -71,9 +76,9 @@ bool ModuleLevelOne::Start()
 
 	player = new Player();
 
-	npcAzul = new Npc(376, 375, BLUE, 50);
-	npcYellow = new Npc(425, 375, YELLOW, 40);
-	npcYellow->maxSpeed = 3.f;
+	npcAzul = new Npc(376, 375, BLUE, 40);
+	npcYellow = new Npc(425, 375, YELLOW, 50);
+	npcYellow->maxSpeed = 2.8f;
 
 	/*
 	npcAzul = new Npc(376, 100, BLUE, 50);

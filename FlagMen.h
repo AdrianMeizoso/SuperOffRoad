@@ -13,12 +13,14 @@ public:
 	void Paint() override;
 	void CleanUp() override;
 
-	int x = 0;
-	int y = 0;
-
+public:
 	bool active = false;
+	bool firstTime = true;
 
 	SDL_Texture* background = nullptr;
+
+	Uint32 start_time = 0;
+	Uint32 total_time = 0;
 
 	Animation run;
 };
