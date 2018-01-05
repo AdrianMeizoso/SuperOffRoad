@@ -19,6 +19,7 @@ public:
 	void Paint() override;
 	void CleanUp() override;
 	void OnCollide(Collider* extType, CollisionState colState) override;
+	void DebugDraw();
 
 private:
 	float GetAngleSprite(float angle);
@@ -55,5 +56,7 @@ public:
 	float angleTarget = 0.f;
 
 	int curentSpritePos = 0;
+
+	bool debug = false;
 };
 

@@ -24,6 +24,12 @@ fPoint Npc::PathFollowing(){
 	fPoint target;
 
 	if (path != nullptr) {
+		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+			debug = !debug;
+
+		if (debug == true)
+			DebugDraw();
+
 		target = path->nodes[currentNode];
 
 		if (position.DistanceTo(target) <= 50) {
@@ -39,6 +45,14 @@ fPoint Npc::PathFollowing(){
 	}
 
 	return target;
+}
+
+void Npc::DebugDraw()
+{
+	
+	for (vector<fPoint>::iterator it = path->nodes.begin(); it != path->nodes.end(); ++it)
+		App->renderer->DrawQuad({(int)(*it).x, (int)(*it).y, 10, 10}, 0, 0, 255, 80);
+		
 }
 
 Npc::Npc(int x, int y, TypeNpc type, int radius) : x(x), y(y), type(type), radius(radius)
@@ -175,6 +189,9 @@ Npc::~Npc()
 	LOG("Unloading npc");
 
 	App->textures->Unload(graphics);
+	delete collider;
+	delete path;
+
 }
 
 float Npc::GetAngleSprite(float angle)
@@ -325,6 +342,7 @@ void Npc::Paint()
 
 void Npc::CleanUp()
 {
+	App->textures->Unload(graphics);
 }
 
 void Npc::OnCollide(Collider* extType, CollisionState colState)

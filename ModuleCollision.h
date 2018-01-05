@@ -77,7 +77,7 @@ private:
 	//PLAYER FLAG NPC
 	bool collisionMatrix[3][3] = { { false, true, true },
 									{ true, false, true },
-									{ true, true, false } };
+									{ true, true, true } };
 
 	CollisionState collisionStateMatrix[3][3] = { COLL_IDLE };
 };

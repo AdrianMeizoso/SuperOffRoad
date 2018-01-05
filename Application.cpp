@@ -8,6 +8,7 @@
 #include "ModuleCollision.h"
 #include "ModuleParticles.h"
 #include "ModuleReadFile.h"
+#include "ModuleFonts.h"
 
 #include "ModuleSceneIntro.h"
 #include "ModuleSceneSpace.h"
@@ -33,8 +34,10 @@ Application::Application()
 
 	// Modules to draw on top of game logic
 	modules.push_back(collision = new ModuleCollision());
+	modules.push_back(fonts = new ModuleFonts());
 	modules.push_back(particles = new ModuleParticles());
 	modules.push_back(fade = new ModuleFadeToBlack());
+	
 	
 }
 

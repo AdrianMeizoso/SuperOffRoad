@@ -78,6 +78,9 @@
     <ClCompile Include="FlagMen.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleFonts.cpp">
+      <Filter>Core Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleAudio.h">
@@ -154,6 +157,9 @@
     </ClInclude>
     <ClInclude Include="FlagMen.h">
       <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFonts.h">
+      <Filter>Core Modules</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

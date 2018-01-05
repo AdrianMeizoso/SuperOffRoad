@@ -70,23 +70,23 @@ bool ModuleLevelOne::Start()
 	textureMap = App->readFile->readTextureMap("Resources/Images/Level/LevelOne/textureMap.txt");
 
 	player = new Player();
-	/*
+
 	npcAzul = new Npc(376, 375, BLUE, 50);
 	npcYellow = new Npc(425, 375, YELLOW, 40);
-	*/
-	
-	//npcYellow->maxSpeed = 3.f;
+	npcYellow->maxSpeed = 3.f;
 
+	/*
 	npcAzul = new Npc(376, 100, BLUE, 50);
 	npcAzul->angle = 180.f;
+	*/
 
-	scoreboard = new Scoreboard(45, 310);
+	scoreboard = new Scoreboard(26, 333);
 	flag = new Flag(204, 298);
 	flag2 = new Flag(300, 305);
 	flag3 = new Flag(361, 212);
 	flagMen = new FlagMen(328, 405);
 
-	flagMen->active = true;
+	flagMen->active = false;
 
 	return true;
 }
@@ -97,6 +97,7 @@ bool ModuleLevelOne::CleanUp()
 	LOG("Unloading space scene");
 
 	App->textures->Unload(background);
+	npcAzul->CleanUp();
 
 	return true;
 }
@@ -118,7 +119,7 @@ update_status ModuleLevelOne::Update()
 	}
 
 	npcAzul->Paint();
-//	npcYellow->Paint();
+	npcYellow->Paint();
 	player->Paint();
 
 	App->renderer->Blit(background, 32, SCREEN_HEIGHT / 2 - rectAlter.h / 2, &rectAlter);
