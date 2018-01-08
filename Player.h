@@ -6,18 +6,22 @@
 
 struct SDL_Texture;
 
+class Path;
+
 class Player: public Entity
 {
 public:
-	Player();
+	Player(fPoint posiiton);
 	~Player();
 
 	void Paint() override;
 	void CleanUp() override;
 	void OnCollide(Collider* extType, CollisionState colState) override;
+	void DebugDraw();
 
 private:
 	float GetAngleSprite(float angle);
+	fPoint PathFollowing();
 
 public:
 
@@ -27,6 +31,9 @@ public:
 	vector<float> anglesRot;
 	SDL_Rect currentRect;
 	fPoint position;
+
+	Path* path = nullptr;
+	int currentNode = 0;
 
 	Collider* collider = nullptr;
 
@@ -42,5 +49,7 @@ public:
 	int nitros = 10;
 
 	int curentSpritePos = 0;
+
+	bool debug = false;
 };
 

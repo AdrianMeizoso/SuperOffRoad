@@ -36,23 +36,23 @@ ModuleLevelOne::ModuleLevelOne(bool active) : Module(active)
 ModuleLevelOne::~ModuleLevelOne()
 {}
 
-int ModuleLevelOne::getHeightInPosition()
+int ModuleLevelOne::getHeightInPosition(int x, int y)
 {
 	int index = 0;
-	if (player->position.y > 0 && player->position.y < 449 && player->position.x > 0 && player->position.x < 640)
+	if (y > 0 && y < 449 && x > 0 && x < 640)
 	{
-		index = 448 * (int)player->position.x + (int)player->position.y;
+		index = 448 * x + y;
 	}
 
 	return heightMap[index];
 }
 
-int ModuleLevelOne::getTextureInPosition()
+int ModuleLevelOne::getTextureInPosition(int x, int y)
 {
 	int index = 0;
-	if (player->position.y > 0 && player->position.y < 449 && player->position.x > 0 && player->position.x < 640)
+	if (y > 0 &&y < 449 && x > 0 && x < 640)
 	{
-		index = 448 * (int)player->position.x + (int)player->position.y;
+		index = 448 * x + y;
 	}
 
 	return textureMap[index];
@@ -74,11 +74,18 @@ bool ModuleLevelOne::Start()
 	heightMap = App->readFile->readHeightMap("Resources/Images/Level/LevelOne/HeightMap.txt");
 	textureMap = App->readFile->readTextureMap("Resources/Images/Level/LevelOne/textureMap.txt");
 
-	player = new Player();
+	player = new Player({ 359, 374 });
 
-	npcAzul = new Npc(376, 375, BLUE, 40);
-	npcYellow = new Npc(425, 375, YELLOW, 50);
-	npcYellow->maxSpeed = 2.8f;
+	npcAzul = new Npc(346, 390, BLUE, 40);
+	npcAzul->nitros = 12;
+
+	npcYellow = new Npc(395, 374, YELLOW, 50);
+	npcYellow->nitros = 4;
+
+	npcGray = new Npc(382, 390, GRAY, 50);
+	npcGray->nitros = 9;
+	npcGray->maxSpeed = 2.8f;
+	npcGray->turnSpeed = 3.8f;
 
 	/*
 	npcAzul = new Npc(376, 100, BLUE, 50);
@@ -110,6 +117,7 @@ bool ModuleLevelOne::CleanUp()
 // Update: draw background
 update_status ModuleLevelOne::Update()
 {
+	
 	if (App->input->GetMouseButtonDown(1) == KEY_DOWN)
 	{
 		LOG("x = %d,y = %d", App->input->GetMousePosition().x, App->input->GetMousePosition().y);
@@ -118,13 +126,9 @@ update_status ModuleLevelOne::Update()
 	// Draw everything --------------------------------------
 	App->renderer->Blit(background, 0, SCREEN_HEIGHT / 2 - rect.h / 2, &rect);
 
-	if (getTextureInPosition() == 5)
-	{
-		App->particles->AddWaterParticle(*App->particles->water, player->position.x - 15, player->position.y - 10);
-	}
-
 	npcAzul->Paint();
 	npcYellow->Paint();
+	npcGray->Paint();
 	player->Paint();
 
 	App->renderer->Blit(background, 32, SCREEN_HEIGHT / 2 - rectAlter.h / 2, &rectAlter);
@@ -138,6 +142,7 @@ update_status ModuleLevelOne::Update()
 	App->renderer->Blit(graphics, SCREEN_WIDTH / 2 - rectTitleLevel.w / 2, 16, &rectTitleLevel);
 
 	scoreboard->Paint();
+	
 
 	return UPDATE_CONTINUE;
 }

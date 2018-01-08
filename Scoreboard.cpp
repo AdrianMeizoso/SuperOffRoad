@@ -42,13 +42,13 @@ void Scoreboard::Paint()
 	int lap = App->scene_levelOne->npcAzul->lap;
 
 	//Red lap
-	App->fonts->print(0, false, 69, 356, TEXTRED);
+	App->fonts->print(App->scene_levelOne->player->lap, false, 69, 356, TEXTRED);
 	//Blue lap
 	App->fonts->print(App->scene_levelOne->npcAzul->lap, false, 91, 356, TEXTBLUE);
 	//Orange lap
 	App->fonts->print(App->scene_levelOne->npcYellow->lap, false, 112, 356, TEXTORANGE);
 	//Gray lap
-	App->fonts->print(0, false, 135, 356, TEXTGRAY);
+	App->fonts->print(App->scene_levelOne->npcGray->lap, false, 135, 356, TEXTGRAY);
 
 	//Red nitros
 	App->fonts->print(App->scene_levelOne->player->nitros, true, 60, 374, TEXTRED);
@@ -57,7 +57,7 @@ void Scoreboard::Paint()
 	//Orange nitros
 	App->fonts->print(App->scene_levelOne->npcYellow->nitros, true, 104, 374, TEXTORANGE);
 	//Gray nitros
-	App->fonts->print(0, true, 127, 374, TEXTGRAY);
+	App->fonts->print(App->scene_levelOne->npcGray->nitros, true, 127, 374, TEXTGRAY);
 
 }
 

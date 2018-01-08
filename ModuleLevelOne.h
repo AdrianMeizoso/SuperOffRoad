@@ -21,8 +21,8 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-	int getHeightInPosition();
-	int getTextureInPosition();
+	int getHeightInPosition(int x, int y);
+	int getTextureInPosition(int x, int y);
 	void DidLap();
 
 public:
@@ -38,6 +38,7 @@ public:
 	Player* player;
 	Npc* npcAzul;
 	Npc* npcYellow;
+	Npc* npcGray;
 	Flag* flag;
 	Flag* flag2;
 	Flag* flag3;

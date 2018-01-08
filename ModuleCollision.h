@@ -25,7 +25,7 @@ struct Collider
 	SDL_Rect rect = { 0,0,0,0 };
 	bool to_delete = false;
 	TypeCollider typeCollider;
-	Entity* entity;
+	Entity* entity = nullptr;
 
 	// TODO 10: Add a way to notify other classes that a collision happened
 
@@ -79,7 +79,9 @@ private:
 									{ true, false, true },
 									{ true, true, true } };
 
-	CollisionState collisionStateMatrix[3][3] = { COLL_IDLE };
+	CollisionState collisionStateMatrix[3][3] = { { COLL_IDLE, COLL_IDLE, COLL_IDLE },
+												{ COLL_IDLE, COLL_IDLE, COLL_IDLE },
+												{ COLL_IDLE, COLL_IDLE, COLL_IDLE } };
 };
 
 #endif // __ModuleCollision_H__

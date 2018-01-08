@@ -19,7 +19,7 @@ struct Particle
 	iPoint position = { 0, 0 };
 	Animation anim;
 
-	int speed = 0;
+	float speed = 0.f;
 	int timeToDelete = 0;
 	TypeParticle typeParticle;
 
@@ -41,7 +41,8 @@ public:
 	update_status Update(); // draw
 	bool CleanUp();
 
-	void AddWaterParticle(const Particle& particle, int x, int y); // feel free to expand this call
+	void AddWaterParticle(const Particle& particle, int x, int y); 
+	void AddDustParticle(const Particle& particle, int x, int y); 
 
 private:
 
@@ -52,6 +53,7 @@ public:
 
 	// prototype particles go here ...
 	Particle* water;
+	Particle* dust;
 };
 
 #endif // __MODULEPARTICLES_H__

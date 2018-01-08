@@ -8,6 +8,7 @@
 #include "ModuleRender.h"
 #include "ModuleCollision.h"
 #include "ModuleFadeToBlack.h"
+#include "ModuleLevelOne.h"
 
 float radiansFromDegrees2(float deg)
 {
@@ -19,7 +20,45 @@ float degreesFromRadians2(float rad)
 	return rad / (M_PI / 180.0f);
 }
 
-Player::Player()
+fPoint Player::PathFollowing() {
+	fPoint target;
+
+	if (path != nullptr) {
+		if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+			debug = !debug;
+
+		if (debug == true)
+			DebugDraw();
+
+		target = path->nodes[currentNode];
+
+		if (position.DistanceTo(target) <= 50) {
+			if (currentNode == 0)
+			{
+				++lap;
+				App->scene_levelOne->DidLap();
+			}
+
+			currentNode += 1;
+
+			if (currentNode >= path->nodes.size()) {
+				currentNode = 0;
+			}
+		}
+	}
+
+	return target;
+}
+
+void Player::DebugDraw()
+{
+
+	for (vector<fPoint>::iterator it = path->nodes.begin(); it != path->nodes.end(); ++it)
+		App->renderer->DrawQuad({ (int)(*it).x, (int)(*it).y, 10, 10 }, 0, 0, 255, 80);
+
+}
+
+Player::Player(fPoint position) : position(position)
 {
 	LOG("Loading player");
 
@@ -107,8 +146,16 @@ Player::Player()
 	acc = 0.03f, dec = 0.05f;
 	turnSpeed = 3.f;
 
-	position.x = 367;
-	position.y = 392;
+	path = new Path();
+	path->addNode({ 346,378 });
+	path->addNode({ 238,374 });
+	path->addNode({ 307,188 });
+	path->addNode({ 497,182 });
+	path->addNode({ 497,115 });
+	path->addNode({ 158,109 });
+	path->addNode({ 107,255 });
+	path->addNode({ 512,274 });
+	path->addNode({ 471,377 });
 
 	collider = App->collision->AddCollider({ (int)position.x - 13, (int)position.y - 10, 28, 14 }, PLAYER, this, this);
 
@@ -151,6 +198,13 @@ float Player::GetAngleSprite(float angle)
 
 void Player::Paint()
 {
+	if (App->scene_levelOne->getTextureInPosition(position.x, position.y) == 5)
+	{
+		App->particles->AddWaterParticle(*App->particles->water, position.x - 15, position.y - 10);
+	}
+
+	PathFollowing();
+
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
 	{
 		if (speed < maxSpeed)
@@ -215,6 +269,7 @@ void Player::Paint()
 		if (nitros > 0)
 		{
 			--nitros;
+			App->particles->AddDustParticle(*App->particles->dust, position.x - 15, position.y - 10);
 			speed = 6;
 		}
 	}

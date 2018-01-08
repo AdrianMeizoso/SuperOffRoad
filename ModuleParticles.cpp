@@ -30,8 +30,21 @@ bool ModuleParticles::Start()
 	water->anim.frames.push_back({ 815, 760, 28, 23 });
 	water->anim.frames.push_back({ 854, 760, 32, 24 });
 	water->anim.frames.push_back({ 912, 760, 32, 24 });
-	water->speed = 0.1f;
+	water->anim.speed = 0.2f;
 	water->anim.loop = false;
+
+	dust = new Particle();
+	dust->typeParticle = DUST;
+	dust->anim.frames.push_back({ 14, 751, 32, 32 });
+	dust->anim.frames.push_back({ 64, 752, 32, 32 });
+	dust->anim.frames.push_back({ 112, 752, 32, 32 });
+	dust->anim.frames.push_back({ 160, 752, 32, 32 });
+	dust->anim.frames.push_back({ 208, 752, 32, 32 });
+	dust->anim.frames.push_back({ 253, 752, 32, 32 });
+	dust->anim.frames.push_back({ 300, 752, 32, 32 });
+	dust->anim.frames.push_back({ 346, 752, 32, 32 });
+	dust->anim.speed = 0.3f;
+	dust->anim.loop = false;
 
 	// TODO 12: Create a new "Explosion" particle 
 	// audio: rtype/explosion.wav
@@ -90,17 +103,35 @@ update_status ModuleParticles::Update()
 
 void ModuleParticles::AddWaterParticle(const Particle& p, int x, int y)
 {
-	// TODO 4: Fill in a method to create an instance of a prototype particle
-	Particle* newParticle = new Particle(p);
+	bool containWater = false;
+	for (list<Particle*>::iterator it = active.begin(); it != active.end(); ++it) {
+		if ((*it)->typeParticle == WATER)
+		{
+			containWater = true;
+		}
+	}
+
+	if (!containWater) {
+		// TODO 4: Fill in a method to create an instance of a prototype particle
+  		Particle* newParticle = new Particle(p);
+		//SDL_Rect particlePosition = {x, y, 25, 25};
+		newParticle->position = { x,y };
+		//newParticle->collider = App->collision->AddCollider({ x, y, 20, 12 }, PARTICLE);
+		//newParticle->collider->listener = newParticle;
+		active.push_back(newParticle);
+		//App->audio->PlayFx(fxparticle);
+	}
+}
+
+void ModuleParticles::AddDustParticle(const Particle & particle, int x, int y)
+{
+	Particle* newParticle = new Particle(particle);
 	//SDL_Rect particlePosition = {x, y, 25, 25};
 	newParticle->position = { x,y };
-	newParticle->speed = 0.1f;
-	newParticle->typeParticle = WATER;
 	//newParticle->collider = App->collision->AddCollider({ x, y, 20, 12 }, PARTICLE);
 	//newParticle->collider->listener = newParticle;
 	active.push_back(newParticle);
 	//App->audio->PlayFx(fxparticle);
-
 }
 
 
@@ -111,7 +142,7 @@ Particle::Particle()
 {}
 
 // TODO 3: Fill in a copy constructor
-Particle::Particle(const Particle& p) : anim(p.anim), position(p.position)
+Particle::Particle(const Particle& p) : anim(p.anim), position(p.position), speed(p.speed), typeParticle(p.typeParticle)
 {}
 
 Particle::~Particle()
@@ -124,7 +155,7 @@ void Particle::Update()
 	// draw and audio will be managed by ModuleParticle::Update()
 	// Note: Set to_delete to true is you want it deleted
 
-	if (this->typeParticle == WATER && this->anim.Finished())
+	if (this->anim.Finished())
 	{
 		this->to_delete = true;
 	}

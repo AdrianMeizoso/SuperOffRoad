@@ -142,13 +142,13 @@ Npc::Npc(int x, int y, TypeNpc type, int radius) : Entity(x, y) , type(type), ra
 	switch (type)
 	{
 		case GRAY:
-			graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_azul.png", 0xBA, 0xFE, 0xCA);
+			graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_gris.png", 0x96, 0xFE, 0xC9);
 			break;
 		case BLUE:
-			graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_azul.png", 0xBA, 0xFE, 0xCA);
+			graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_azul.png", 0x96, 0xFE, 0xC9);
 			break;
 		case YELLOW:
-			graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_amarillo.png", 0xBA, 0xFE, 0xCA);
+			graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_amarillo.png", 0x96, 0xFE, 0xC9);
 			break;
 		default:
 			break;
@@ -223,6 +223,11 @@ float Npc::GetAngleSprite(float angle)
 
 void Npc::Paint()
 {
+
+	if (App->scene_levelOne->getTextureInPosition(position.x, position.y) == 5)
+	{
+		App->particles->AddWaterParticle(*App->particles->water, position.x - 15, position.y - 10);
+	}
 	
 	fPoint target = PathFollowing();
 	fPoint initPoint = position;
@@ -335,6 +340,7 @@ void Npc::Paint()
 
 	//LOG("position.x: %f, position.y: %f", position.x, position.y);
 
+	
 	currentRect = rotationCarSprites[curentSpritePos];
 
 	collider->SetPos((int)position.x - 13, (int)position.y - 6);

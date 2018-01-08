@@ -11,7 +11,7 @@
 #include "ModuleFonts.h"
 
 #include "ModuleSceneIntro.h"
-#include "ModuleSceneSpace.h"
+#include "ModuleSceneTitle.h"
 #include "ModuleLevelOne.h"
 
 
@@ -29,6 +29,7 @@ Application::Application()
 	modules.push_back(readFile = new ModuleReadFile());
 
 	// Game Modules
+	modules.push_back(scene_title = new ModuleSceneTitle(false));
 	modules.push_back(scene_intro = new ModuleSceneIntro(false));
 	modules.push_back(scene_levelOne = new ModuleLevelOne(false));
 
@@ -61,7 +62,8 @@ bool Application::Init()
 	}
 
 	// Start the first scene --
-	fade->FadeToBlack(scene_intro, nullptr, 3.0f);
+	//fade->FadeToBlack(scene_intro, nullptr, 3.0f);
+	scene_intro->Enable();
 
 	return ret;
 }
