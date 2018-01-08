@@ -1,37 +1,37 @@
-## Welcome to GitHub Pages
+# Super Off Road
 
-You can use the [editor on GitHub](https://github.com/AdrianMeizoso/SuperOffRoad/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+This is my tribute to Super Off Road, first released for arcade in 1989. This is a version of the Sega Genesis Console.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## PROJECT INFORMATION
 
-### Markdown
+Full project at github: [https://github.com/AdrianMeizoso/SuperOffRoad](https://github.com/AdrianMeizoso/SuperOffRoad) 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+*Author*: Adrián Meizoso
 
-```markdown
-Syntax highlighted code block
+Contact: adrian.meizoso@est.fib.upc.edu
 
-# Header 1
-## Header 2
-### Header 3
+License: GNU GENERAL PUBLIC LICENSE
 
-- Bulleted
-- List
+## Gameplay video
 
-1. Numbered
-2. List
+Currently the game include two circuits of the original game.
 
-**Bold** and _Italic_ and `Code` text
+## Commands
 
-[Link](url) and ![Image](src)
-```
+* **NITRO:** (Player 1: C / Player 2: Shift)
+* **ACCELERATE:** (Player 1: Space / Player 2: Intro)
+* **ROTATE RIGHT:** (Player 1: D / Player 2: Right Key)
+* **ROTATE LEFT:** (Player 1: A / Player 2: Left Key)
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Debug mode
+Pressing one of each keys you can access to differents debug modes:
 
-### Jekyll Themes
+* F1: Show colliders: Player, Npc and items colliders are shown in green.
+* F2: Show checkpoints: Player and Npc road checkpoints are shown in blue.
+* F3: More nitro: Pressing this button will augment your nitro in 1.
+* F4: Wall Collisions: The collision with walls are disabled.
+* F5: Npc Collisions: The collision with Npc are disabled.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/AdrianMeizoso/SuperOffRoad/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## How to finish the game:
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+When any of the car (Player and Npc) arrive to 4 laps, the game will change to other circuit.
