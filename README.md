@@ -13,7 +13,10 @@ Contact: adrian.meizoso@est.fib.upc.edu
 License: GNU GENERAL PUBLIC LICENSE
 
 ## Gameplay video
-You can find a little example of the gameple in the next link: [https://youtu.be/9s7Z5lA8xJE](https://youtu.be/9s7Z5lA8xJE)
+You can find a little example of the gameplay below:
+<iframe width="560" height="315" src="https://www.youtube.com/embed/v-EPVxW6f4s" frameborder="0" allowfullscreen></iframe>
+
+Also you can see it in the next link: [https://youtu.be/9s7Z5lA8xJE](https://youtu.be/9s7Z5lA8xJE)
 
 Currently the game include one circuit of the original version. There are other 3 cars that compete against you in order to finish the laps. There are some effects like dust, water, flags movement, etc.
 
