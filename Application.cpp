@@ -14,6 +14,7 @@
 #include "ModuleSceneTitle.h"
 #include "ModulePlayerSelect.h"
 #include "ModuleLevelOne.h"
+#include "ModuleCircuits.h"
 
 
 using namespace std;
@@ -34,13 +35,13 @@ Application::Application()
 	modules.push_back(scene_intro = new ModuleSceneIntro(false));
 	modules.push_back(scene_select = new ModulePlayerSelect(false));
 	modules.push_back(scene_levelOne = new ModuleLevelOne(false));
+	modules.push_back(scene_circuits = new ModuleCircuits(true));
 
 	// Modules to draw on top of game logic
-	modules.push_back(collision = new ModuleCollision());
 	modules.push_back(fonts = new ModuleFonts());
 	modules.push_back(particles = new ModuleParticles());
 	modules.push_back(fade = new ModuleFadeToBlack());
-	
+	modules.push_back(collision = new ModuleCollision());
 	
 }
 

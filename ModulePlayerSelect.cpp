@@ -6,6 +6,7 @@
 #include "ModuleRender.h"
 #include "ModuleFadeToBlack.h"
 #include "ModulePlayerSelect.h"
+#include "ModuleCircuits.h"
 #include "ModuleFonts.h"
 #include "SDL\include\SDL.h"
 
@@ -46,6 +47,10 @@ bool ModulePlayerSelect::Start()
 	if (fx == 0)
 		fx = App->audio->LoadFx("rtype/starting.wav");
 
+	firstTime = true;
+	firstPlayerActive = false;
+	secondPlayerActive = false;
+
 	start_time = SDL_GetTicks();
 
 	return true;
@@ -65,40 +70,63 @@ update_status ModulePlayerSelect::Update()
 
 	if (time >= 0)
 	{
-		App->fonts->print("PRESS", 115, 235);
-		App->fonts->print("START", 115, 267);
+		if (!firstPlayerActive)
+		{
+			App->fonts->print("PRESS", 115, 235);
+			App->fonts->print("START", 115, 267);
 
-		App->fonts->print(itoa(time, buffer, 10), 145, 315);
+			App->fonts->print(itoa(time, buffer, 10), 145, 315);
+		}
+		else {
+			App->fonts->print("SELECTED", 115, 235);
+		}
+		
+		if (!secondPlayerActive)
+		{
+			App->fonts->print("PRESS", 115 + playerRedRect.w + 100, 235);
+			App->fonts->print("START", 115 + playerRedRect.w + 100, 267);
 
-		App->fonts->print("PRESS", 115 + playerRedRect.w + 100, 235);
-		App->fonts->print("START", 115 + playerRedRect.w + 100, 267);
-
-		App->fonts->print(itoa(time, buffer, 10), 145 + playerRedRect.w + 100, 315);
+			App->fonts->print(itoa(time, buffer, 10), 145 + playerRedRect.w + 100, 315);
+		} 
+		else {
+			App->fonts->print("SELECTED", 115 + playerRedRect.w + 100, 235);
+		}
 	}
 	else {
-		if (firstTime) {
-			start_timeTemp = SDL_GetTicks();
-			total_time = (Uint32)(3.0f * 1000.0f);
-			firstTime = false;
-		}
-
-		Uint32 nowTemp = SDL_GetTicks() - start_timeTemp;
-
-		if (nowTemp >= total_time && App->fade->isFading() == false)
+		if ((firstPlayerActive || secondPlayerActive) && App->fade->isFading() == false)
 		{
-			App->fade->FadeToBlack((Module*)App->scene_intro, this, 0.05f);
+			if (firstPlayerActive)++App->scene_circuits->numPlayers;
+			if (secondPlayerActive)++App->scene_circuits->numPlayers;
+			App->scene_circuits->nextCircuit(this);
 		}
+		else if (!firstPlayerActive && !secondPlayerActive){
+			if (firstTime) {
+				start_timeTemp = SDL_GetTicks();
+				total_time = (Uint32)(3.0f * 1000.0f);
+				firstTime = false;
+			}
 
-		App->fonts->print("NO", 215, 235);
-		App->fonts->print("PLAYER", 254, 235);
-		App->fonts->print("SELECTED", 359, 235);
+			Uint32 nowTemp = SDL_GetTicks() - start_timeTemp;
 
+			if (nowTemp >= total_time && App->fade->isFading() == false)
+			{
+				App->fade->FadeToBlack((Module*)App->scene_intro, this, 0.05f);
+			}
+
+			App->fonts->print("NO", 215, 235);
+			App->fonts->print("PLAYER", 254, 235);
+			App->fonts->print("SELECTED", 359, 235);
+		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->fade->isFading() == false)
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		App->fade->FadeToBlack((Module*)App->scene_levelOne, this, 0.05f);
-		App->audio->PlayFx(fx);
+		firstPlayerActive = true;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_DOWN)
+	{
+		secondPlayerActive = true;
 	}
 
 	return UPDATE_CONTINUE;

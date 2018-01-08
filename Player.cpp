@@ -58,7 +58,7 @@ void Player::DebugDraw()
 
 }
 
-Player::Player(fPoint position) : position(position)
+Player::Player(fPoint position, int numPlayer) : position(position), numPlayer(numPlayer)
 {
 	LOG("Loading player");
 
@@ -138,7 +138,14 @@ Player::Player(fPoint position) : position(position)
 
 	currentRect = rotationCarSprites[0];
 
-	graphics = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);
+	if (numPlayer == 1)
+	{
+		graphics = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);
+	}
+	else {
+		graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_azul.png", 0x96, 0xFE, 0xC9);
+	}
+	
 
 	speed = 0.f;
 	angle = 0.f;
@@ -198,104 +205,113 @@ float Player::GetAngleSprite(float angle)
 
 void Player::Paint()
 {
-	if (App->scene_levelOne->getTextureInPosition(position.x, position.y) == 5)
+	if (!App->fade->isFading())
 	{
-		App->particles->AddWaterParticle(*App->particles->water, position.x - 15, position.y - 10);
-	}
 
-	PathFollowing();
-
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
-	{
-		if (speed < maxSpeed)
+		if (App->scene_levelOne->getTextureInPosition(position.x, position.y) == 5)
 		{
-			if (speed < 0)
-			{
-				speed += acc * 2;
-			}
-			else {
-				speed += acc;
-			}
+			App->particles->AddWaterParticle(*App->particles->water, position.x - 15, position.y - 10);
 		}
-		else if (speed > maxSpeed) {
-			speed -= dec;
+
+		PathFollowing();
+
+		if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && numPlayer == 1) ||
+			(App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_REPEAT && numPlayer == 2))
+		{
 			if (speed < maxSpeed)
 			{
-				speed = maxSpeed;
+				if (speed < 0)
+				{
+					speed += acc * 2;
+				}
+				else {
+					speed += acc;
+				}
+			}
+			else if (speed > maxSpeed) {
+				speed -= dec;
+				if (speed < maxSpeed)
+				{
+					speed = maxSpeed;
+				}
 			}
 		}
-	}
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_IDLE)
-	{
-		if (speed - dec > 0)
+		if ((App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_IDLE && numPlayer == 1) ||
+			(App->input->GetKey(SDL_SCANCODE_RSHIFT) == KEY_IDLE && numPlayer == 2))
 		{
-			speed -= dec;
-			if (speed < 0)
+			if (speed - dec > 0)
 			{
-				speed = 0;
+				speed -= dec;
+				if (speed < 0)
+				{
+					speed = 0;
+				}
 			}
-		}
-		else if (speed - dec < 0) 
-		{
-			speed += dec;
-			if (speed > 0)
+			else if (speed - dec < 0)
 			{
-				speed = 0;
+				speed += dec;
+				if (speed > 0)
+				{
+					speed = 0;
+				}
 			}
 		}
-	}
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		angle -= turnSpeed;
-		if (angle < 0)
+		if ((App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && numPlayer == 1) ||
+			(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && numPlayer == 2))
 		{
-			angle = 360 - turnSpeed;
+			angle -= turnSpeed;
+			if (angle < 0)
+			{
+				angle = 360 - turnSpeed;
+			}
 		}
-	}
 
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		angle += turnSpeed;
-		if (angle > 360)
+		if ((App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && numPlayer == 1) ||
+			(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && numPlayer == 2))
 		{
-			angle = turnSpeed;
+			angle += turnSpeed;
+			if (angle > 360)
+			{
+				angle = turnSpeed;
+			}
 		}
-	}
 
-	if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
-	{
-		if (nitros > 0)
+		if ((App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN && numPlayer == 1) ||
+			(App->input->GetKey(SDL_SCANCODE_RCTRL) == KEY_DOWN && numPlayer == 2))
 		{
-			--nitros;
-			App->particles->AddDustParticle(*App->particles->dust, position.x - 15, position.y - 10);
-			speed = 6;
+			if (nitros > 0)
+			{
+				--nitros;
+				App->particles->AddDustParticle(*App->particles->dust, position.x - 15, position.y - 10);
+				speed = 6;
+			}
 		}
+
+		float angleCalc = angle;
+
+		angleCalc = GetAngleSprite(angle);
+
+
+		//Calculation of deviation of perspective
+		if (angleCalc > 180)
+		{
+			angleCalc -= sinf(radiansFromDegrees2(angleCalc)) * 26.58f;
+		}
+		else
+		{
+			angleCalc += sinf(radiansFromDegrees2(angleCalc)) * 26.58f;
+		}
+
+		float mx = -cosf(radiansFromDegrees2(angleCalc))*speed;
+		float my = -sinf(radiansFromDegrees2(angleCalc))*speed;
+
+		position.x += mx;
+		position.y += my;
+
+		//LOG("position.x: %f, position.y: %f", position.x, position.y);
 	}
-
-	float angleCalc = angle;
-
-	angleCalc = GetAngleSprite(angle);
-
-
-	//Calculation of deviation of perspective
-	if (angleCalc > 180)
-	{
-		angleCalc -= sinf(radiansFromDegrees2(angleCalc)) * 26.58f;
-	}
-	else
-	{
-		angleCalc += sinf(radiansFromDegrees2(angleCalc)) * 26.58f;
-	}
-	
-	float mx = -cosf(radiansFromDegrees2(angleCalc))*speed;
-	float my = -sinf(radiansFromDegrees2(angleCalc))*speed;
-
-	position.x += mx;
-	position.y += my;
-
-	//LOG("position.x: %f, position.y: %f", position.x, position.y);
 
 	currentRect = rotationCarSprites[curentSpritePos];
 
@@ -305,10 +321,6 @@ void Player::Paint()
 	App->renderer->Blit(graphics, position.x + 2.f - currentRect.w / 2, position.y + 2.f - currentRect.h / 2, &rotationShadowSprites[curentSpritePos]);
 	App->renderer->Blit(graphics, position.x - currentRect.w/2, position.y- currentRect.h / 2, &currentRect);
 
-	if (position.x <= -7)
-	{
-		speed *= -1;
-	}
 
 }
 

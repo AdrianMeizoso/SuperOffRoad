@@ -8,7 +8,7 @@ struct SDL_Texture;
 
 class path;
 
-enum TypeNpc { GRAY, BLUE, YELLOW };
+enum TypeNpc { GRAY, BLUE, YELLOW , RED};
 
 class Npc : public Entity
 {

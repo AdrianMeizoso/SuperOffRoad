@@ -35,10 +35,6 @@ update_status ModuleCollision::PreUpdate()
 
 update_status ModuleCollision::Update()
 {
-	// TODO 8: Check collisions between all colliders. 
-	// After making it work, review that you are doing the minumum checks possible
-
-
 	list<Collider*>::iterator iti = colliders.begin();
 	for (int i = 0; i < (int)(colliders.size() - 1); ++i)
 	{
@@ -112,15 +108,5 @@ Collider* ModuleCollision::AddCollider(const SDL_Rect& rect, TypeCollider typeco
 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
-	// TODO 7: Create by hand (avoid consulting the internet) a simple collision test
-	// Return true if rectangle argument "r" if intersecting with "this->rect"
-/*
-	if (((r.y - r.h) > rect.y)) return false;
-	if ((r.y < (rect.y - rect.h))) return false;
-	if ((r.x >(rect.x + rect.w))) return false;
-	if (((r.x + r.w) < rect.x)) return false;
-	*/
-
 	return SDL_HasIntersection(&r, &rect);
-	//return true;
 }

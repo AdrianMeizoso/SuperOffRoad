@@ -11,9 +11,9 @@ public:
 	ModuleSceneIntro(bool active = true);
 	~ModuleSceneIntro();
 
-	bool Start();
-	update_status Update();
-	bool CleanUp();
+	bool Start() override;
+	update_status Update() override;
+	bool CleanUp() override;
 
 public:
 	

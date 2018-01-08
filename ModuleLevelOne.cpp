@@ -7,6 +7,8 @@
 #include "ModuleCollision.h"
 #include "ModuleParticles.h"
 #include "ModuleInput.h"
+#include "ModuleCircuits.h"
+#include "ModuleFadeToBlack.h"
 #include "Scoreboard.h"
 #include "Player.h"
 #include "Flag.h"
@@ -74,23 +76,40 @@ bool ModuleLevelOne::Start()
 	heightMap = App->readFile->readHeightMap("Resources/Images/Level/LevelOne/HeightMap.txt");
 	textureMap = App->readFile->readTextureMap("Resources/Images/Level/LevelOne/textureMap.txt");
 
-	player = new Player({ 359, 374 });
+	if (App->scene_circuits->numPlayers == 0)
+	{
+		npcRed = new Npc(359, 374, RED, 40);
+		npcRed->nitros = 12;
+		App->scene_circuits->npcs.push_back(npcRed);
+		npcAzul = new Npc(346, 390, BLUE, 40);
+		npcAzul->nitros = 12;
+		App->scene_circuits->npcs.push_back(npcAzul);
+	}
+	else if (App->scene_circuits->numPlayers == 1) {
+		player = new Player({ 359, 374 }, 1);
+		App->scene_circuits->players.push_back(player);
+		npcAzul = new Npc(346, 390, BLUE, 40);
+		npcAzul->nitros = 12;
+		App->scene_circuits->npcs.push_back(npcAzul);
+	}
+	else {
+		player = new Player({ 359, 374 },1 );
+		App->scene_circuits->players.push_back(player);
+		player2 = new Player({ 346, 390 }, 2);
+		App->scene_circuits->players.push_back(player2);
+	}
 
-	npcAzul = new Npc(346, 390, BLUE, 40);
-	npcAzul->nitros = 12;
 
 	npcYellow = new Npc(395, 374, YELLOW, 50);
 	npcYellow->nitros = 4;
+	App->scene_circuits->npcs.push_back(npcYellow);
 
 	npcGray = new Npc(382, 390, GRAY, 50);
 	npcGray->nitros = 9;
 	npcGray->maxSpeed = 2.8f;
 	npcGray->turnSpeed = 3.8f;
+	App->scene_circuits->npcs.push_back(npcGray);
 
-	/*
-	npcAzul = new Npc(376, 100, BLUE, 50);
-	npcAzul->angle = 180.f;
-	*/
 
 	scoreboard = new Scoreboard(26, 333);
 	flag = new Flag(204, 298);
@@ -99,6 +118,8 @@ bool ModuleLevelOne::Start()
 	flagMen = new FlagMen(328, 405);
 
 	flagMen->active = false;
+
+	App->audio->PlayMusic("Resources/Music/big dukes.wav", 1.0f);
 
 	return true;
 }
@@ -109,7 +130,6 @@ bool ModuleLevelOne::CleanUp()
 	LOG("Unloading space scene");
 
 	App->textures->Unload(background);
-	npcAzul->CleanUp();
 
 	return true;
 }
@@ -117,6 +137,23 @@ bool ModuleLevelOne::CleanUp()
 // Update: draw background
 update_status ModuleLevelOne::Update()
 {
+	
+	for(int i = 0; i < App->scene_circuits->players.size(); ++i)
+	{
+		if (App->scene_circuits->players[i]->lap >= 4 && App->fade->isFading() == false)
+		{
+			App->scene_circuits->nextCircuit(this);
+		}
+	}
+
+	for (int i = 0; i < App->scene_circuits->npcs.size(); ++i)
+	{
+		if (App->scene_circuits->npcs[i]->lap >= 4 && App->fade->isFading() == false)
+		{
+			App->scene_circuits->nextCircuit(this);
+		}
+	}
+	
 	
 	if (App->input->GetMouseButtonDown(1) == KEY_DOWN)
 	{
@@ -126,22 +163,38 @@ update_status ModuleLevelOne::Update()
 	// Draw everything --------------------------------------
 	App->renderer->Blit(background, 0, SCREEN_HEIGHT / 2 - rect.h / 2, &rect);
 
-	npcAzul->Paint();
-	npcYellow->Paint();
-	npcGray->Paint();
-	player->Paint();
+	if (App->fade->isFading() == false)
+	{
+		npcYellow->Paint();
+		npcGray->Paint();
 
-	App->renderer->Blit(background, 32, SCREEN_HEIGHT / 2 - rectAlter.h / 2, &rectAlter);
 
-	flag->Paint();
-	flag2->Paint();
-	flag3->Paint();
+		if (App->scene_circuits->numPlayers == 0)
+		{
+			npcRed->Paint();
+			npcAzul->Paint();
+		}
+		else if (App->scene_circuits->numPlayers == 1) {
+			player->Paint();
+			npcAzul->Paint();
+		}
+		else {
+			player->Paint();
+			player2->Paint();
+		}
 
-	flagMen->Paint();
+		App->renderer->Blit(background, 32, SCREEN_HEIGHT / 2 - rectAlter.h / 2, &rectAlter);
 
-	App->renderer->Blit(graphics, SCREEN_WIDTH / 2 - rectTitleLevel.w / 2, 16, &rectTitleLevel);
+		flag->Paint();
+		flag2->Paint();
+		flag3->Paint();
 
-	scoreboard->Paint();
+		flagMen->Paint();
+
+		App->renderer->Blit(graphics, SCREEN_WIDTH / 2 - rectTitleLevel.w / 2, 16, &rectTitleLevel);
+
+		scoreboard->Paint();
+	}
 	
 
 	return UPDATE_CONTINUE;

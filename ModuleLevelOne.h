@@ -17,9 +17,9 @@ public:
 	ModuleLevelOne(bool active = true);
 	~ModuleLevelOne();
 
-	bool Start();
-	update_status Update();
-	bool CleanUp();
+	bool Start() override;
+	update_status Update() override;
+	bool CleanUp() override;
 
 	int getHeightInPosition(int x, int y);
 	int getTextureInPosition(int x, int y);
@@ -34,14 +34,19 @@ public:
 	SDL_Rect rectAlter;
 	SDL_Rect rectTitleLevel;
 
-	Scoreboard* scoreboard;
-	Player* player;
-	Npc* npcAzul;
-	Npc* npcYellow;
-	Npc* npcGray;
-	Flag* flag;
-	Flag* flag2;
-	Flag* flag3;
+	Scoreboard* scoreboard = nullptr;
+
+	Player* player = nullptr;
+	Player* player2 = nullptr;
+
+	Npc* npcAzul = nullptr;
+	Npc* npcRed = nullptr;
+	Npc* npcYellow = nullptr;
+	Npc* npcGray = nullptr;
+
+	Flag* flag = nullptr;
+	Flag* flag2 = nullptr;
+	Flag* flag3 = nullptr;
 
 	FlagMen* flagMen;
 

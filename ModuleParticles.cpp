@@ -112,12 +112,8 @@ void ModuleParticles::AddWaterParticle(const Particle& p, int x, int y)
 	}
 
 	if (!containWater) {
-		// TODO 4: Fill in a method to create an instance of a prototype particle
   		Particle* newParticle = new Particle(p);
-		//SDL_Rect particlePosition = {x, y, 25, 25};
 		newParticle->position = { x,y };
-		//newParticle->collider = App->collision->AddCollider({ x, y, 20, 12 }, PARTICLE);
-		//newParticle->collider->listener = newParticle;
 		active.push_back(newParticle);
 		//App->audio->PlayFx(fxparticle);
 	}
@@ -126,10 +122,7 @@ void ModuleParticles::AddWaterParticle(const Particle& p, int x, int y)
 void ModuleParticles::AddDustParticle(const Particle & particle, int x, int y)
 {
 	Particle* newParticle = new Particle(particle);
-	//SDL_Rect particlePosition = {x, y, 25, 25};
 	newParticle->position = { x,y };
-	//newParticle->collider = App->collision->AddCollider({ x, y, 20, 12 }, PARTICLE);
-	//newParticle->collider->listener = newParticle;
 	active.push_back(newParticle);
 	//App->audio->PlayFx(fxparticle);
 }

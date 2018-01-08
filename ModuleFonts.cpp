@@ -60,6 +60,7 @@ bool ModuleFonts::Init()
 	fontSelectPlayer['Z'] = { 1132, 1634, 24, 30 };
 	fontSelectPlayer[' '] = { 1068, 1666, 24, 30 };
 
+	/*
 	fontSelectPlayer['!'] = { 160, 1634, 10, 16 };
 	fontSelectPlayer['"'] = { 160, 1634, 10, 16 };
 	fontSelectPlayer['.'] = { 160, 1634, 10, 16 };
@@ -71,6 +72,7 @@ bool ModuleFonts::Init()
 	fontSelectPlayer['+'] = { 160, 1634, 10, 16 };
 	fontSelectPlayer['€'] = { 160, 1634, 10, 16 };
 	fontSelectPlayer[';'] = { 160, 1634, 10, 16 };
+	*/
 
 	graphics = App->textures->LoadWithColorKey("Resources/Images/Level/Levels2.png", 0xBA, 0xFE, 0xCA);
 	fontBack = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);

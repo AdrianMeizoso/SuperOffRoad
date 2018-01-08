@@ -26,10 +26,7 @@ bool ModuleSceneIntro::Start()
 	
 	background = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);
 
-	//App->audio->PlayMusic("Resources/Music/title.ogg", 1.0f);
-
-	if(fx == 0)
-		fx = App->audio->LoadFx("rtype/starting.wav");
+	App->audio->PlayMusic("Resources/Music/menu.wav", 1.0f);
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 

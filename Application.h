@@ -22,6 +22,7 @@ class ModuleSceneIntro;
 class ModuleSceneTitle;
 class ModulePlayerSelect;
 class ModuleLevelOne;
+class ModuleCircuits;
 
 class Application
 {
@@ -52,6 +53,8 @@ public:
 	ModuleSceneTitle* scene_title;
 	ModulePlayerSelect* scene_select;
 	ModuleLevelOne* scene_levelOne;
+	ModuleCircuits* scene_circuits;
+	
 
 private:
 

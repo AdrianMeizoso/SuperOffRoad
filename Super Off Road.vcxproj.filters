@@ -84,7 +84,9 @@
     <ClCompile Include="ModulePlayerSelect.cpp">
       <Filter>Game Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleCircuits.cpp" />
+    <ClCompile Include="ModuleCircuits.cpp">
+      <Filter>Game Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleAudio.h">
@@ -168,6 +170,8 @@
     <ClInclude Include="ModulePlayerSelect.h">
       <Filter>Game Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleCircuits.h" />
+    <ClInclude Include="ModuleCircuits.h">
+      <Filter>Game Modules</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

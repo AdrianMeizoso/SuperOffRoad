@@ -150,6 +150,9 @@ Npc::Npc(int x, int y, TypeNpc type, int radius) : Entity(x, y) , type(type), ra
 		case YELLOW:
 			graphics = App->textures->LoadWithColorKey("Resources/Images/Level/sheet_coche_amarillo.png", 0x96, 0xFE, 0xC9);
 			break;
+		case RED:
+			graphics = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0x96, 0xFE, 0xC9);
+			break;
 		default:
 			break;
 	}
@@ -223,123 +226,126 @@ float Npc::GetAngleSprite(float angle)
 
 void Npc::Paint()
 {
-
-	if (App->scene_levelOne->getTextureInPosition(position.x, position.y) == 5)
+	if (!App->fade->isFading())
 	{
-		App->particles->AddWaterParticle(*App->particles->water, position.x - 15, position.y - 10);
-	}
-	
-	fPoint target = PathFollowing();
-	fPoint initPoint = position;
-	initPoint.x -= 1;
 
-	fPoint targetVector = target - position;
-	fPoint initVector = initPoint - position;
-
-	float angleTarget = degreesFromRadians(acos((initVector.dotProd(targetVector)) 
-		/ (initVector.lenght()*targetVector.lenght()))); 
-
-
-	
-	if (target.y > position.y)
-	{
-		angleTarget = 360 - angleTarget;
-	}
-	
-
-	
-	if (angleTarget != angle)
-	{
-		if (angleTarget > angle)
+		if (App->scene_levelOne->getTextureInPosition(position.x, position.y) == 5)
 		{
-			if (angleTarget - angle < 180)
+			App->particles->AddWaterParticle(*App->particles->water, position.x - 15, position.y - 10);
+		}
+
+		fPoint target = PathFollowing();
+		fPoint initPoint = position;
+		initPoint.x -= 1;
+
+		fPoint targetVector = target - position;
+		fPoint initVector = initPoint - position;
+
+		float angleTarget = degreesFromRadians(acos((initVector.dotProd(targetVector))
+			/ (initVector.lenght()*targetVector.lenght())));
+
+
+
+		if (target.y > position.y)
+		{
+			angleTarget = 360 - angleTarget;
+		}
+
+
+
+		if (angleTarget != angle)
+		{
+			if (angleTarget > angle)
 			{
-				angle += turnSpeed;
-				if (angle > 360)
+				if (angleTarget - angle < 180)
 				{
-					angle = turnSpeed;
+					angle += turnSpeed;
+					if (angle > 360)
+					{
+						angle = turnSpeed;
+					}
+				}
+				else
+				{
+					angle -= turnSpeed;
+					if (angle < 0)
+					{
+						angle = 360 - turnSpeed;
+					}
+
 				}
 			}
 			else
 			{
-				angle -= turnSpeed;
-				if (angle < 0)
+				if (angle - angleTarget > 180)
 				{
-					angle = 360 - turnSpeed;
+					angle += turnSpeed;
+					if (angle > 360)
+					{
+						angle = turnSpeed;
+					}
+				}
+				else
+				{
+					angle -= turnSpeed;
+					if (angle < 0)
+					{
+						angle = 360 - turnSpeed;
+					}
+
 				}
 
 			}
+		}
+
+
+
+		if (speed < maxSpeed)
+		{
+			if (speed < 0)
+			{
+				speed += acc * 2;
+			}
+			else {
+				speed += acc;
+			}
+		}
+		else if (speed > maxSpeed) {
+			speed -= dec;
+			if (speed < maxSpeed)
+			{
+				speed = maxSpeed;
+			}
+		}
+
+
+
+		angleCalc = angle;
+
+
+		//Calculation of deviation of perspective
+		if (angleCalc > 180)
+		{
+			angleCalc += sinf(radiansFromDegrees(angle)) * 26.58f;
 		}
 		else
 		{
-			if (angle - angleTarget > 180)
-			{
-				angle += turnSpeed;
-				if (angle > 360)
-				{
-					angle = turnSpeed;
-				}
-			}
-			else
-			{
-				angle -= turnSpeed;
-				if (angle < 0)
-				{
-					angle = 360 - turnSpeed;
-				}
-
-			}
-
+			angleCalc -= (sinf(radiansFromDegrees(angle)) * 26.58f);
 		}
+
+
+		GetAngleSprite(angleCalc);
+
+
+		float mx = -cosf(radiansFromDegrees(angle))*speed;
+		float my = -sinf(radiansFromDegrees(angle))*speed;
+
+		position.x += mx;
+		position.y += my;
+
+		//LOG("position.x: %f, position.y: %f", position.x, position.y);
+
 	}
-	
-	
-
-	if (speed < maxSpeed)
-	{
-		if (speed < 0)
-		{
-			speed += acc * 2;
-		}
-		else {
-			speed += acc;
-		}
-	}
-	else if (speed > maxSpeed) {
-		speed -= dec;
-		if (speed < maxSpeed)
-		{
-			speed = maxSpeed;
-		}
-	}
-
-	
-
-	angleCalc = angle;
-
-	
-	//Calculation of deviation of perspective
-	if (angleCalc > 180)
-	{
-		angleCalc += sinf(radiansFromDegrees(angle)) * 26.58f;
-	}
-	else
-	{
-		angleCalc -= (sinf(radiansFromDegrees(angle)) * 26.58f);
-	}
-	
-
-	GetAngleSprite(angleCalc);
-
-
-	float mx = -cosf(radiansFromDegrees(angle))*speed;
-	float my = -sinf(radiansFromDegrees(angle))*speed;
-
-	position.x += mx;
-	position.y += my;
-
-	//LOG("position.x: %f, position.y: %f", position.x, position.y);
-
 	
 	currentRect = rotationCarSprites[curentSpritePos];
 

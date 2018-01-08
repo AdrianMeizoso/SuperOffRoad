@@ -11,7 +11,7 @@ class Path;
 class Player: public Entity
 {
 public:
-	Player(fPoint posiiton);
+	Player(fPoint posiiton, int numPlayer);
 	~Player();
 
 	void Paint() override;
@@ -49,6 +49,8 @@ public:
 	int nitros = 10;
 
 	int curentSpritePos = 0;
+
+	int numPlayer = 1;
 
 	bool debug = false;
 };

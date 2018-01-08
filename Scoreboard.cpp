@@ -7,7 +7,7 @@
 #include "Player.h"
 #include "ModuleFonts.h"
 
-#include "ModuleLevelOne.h"
+#include "ModuleCircuits.h"
 
 
 #include "SDL\include\SDL.h"
@@ -39,26 +39,70 @@ void Scoreboard::Paint()
 	//Print time
 	App->fonts->print(time, true, 69, 339, TEXTGRAY);
 
-	int lap = App->scene_levelOne->npcAzul->lap;
+	if (App->scene_circuits->numPlayers > 0)
+	{
+		//Red lap
+		App->fonts->print(App->scene_circuits->players[0]->lap, false, 69, 356, TEXTRED);
+		//Red nitros
+		App->fonts->print(App->scene_circuits->players[0]->nitros, true, 60, 374, TEXTRED);
 
-	//Red lap
-	App->fonts->print(App->scene_levelOne->player->lap, false, 69, 356, TEXTRED);
-	//Blue lap
-	App->fonts->print(App->scene_levelOne->npcAzul->lap, false, 91, 356, TEXTBLUE);
-	//Orange lap
-	App->fonts->print(App->scene_levelOne->npcYellow->lap, false, 112, 356, TEXTORANGE);
-	//Gray lap
-	App->fonts->print(App->scene_levelOne->npcGray->lap, false, 135, 356, TEXTGRAY);
+		if (App->scene_circuits->numPlayers == 1)
+		{
+			//Blue lap
+			App->fonts->print(App->scene_circuits->npcs[0]->lap, false, 91, 356, TEXTBLUE);
+			//Blue nitros
+			App->fonts->print(App->scene_circuits->npcs[0]->nitros, true, 82, 374, TEXTBLUE);
 
-	//Red nitros
-	App->fonts->print(App->scene_levelOne->player->nitros, true, 60, 374, TEXTRED);
-	//Blue nitros
-	App->fonts->print(App->scene_levelOne->npcAzul->nitros, true, 82, 374, TEXTBLUE);
-	//Orange nitros
-	App->fonts->print(App->scene_levelOne->npcYellow->nitros, true, 104, 374, TEXTORANGE);
-	//Gray nitros
-	App->fonts->print(App->scene_levelOne->npcGray->nitros, true, 127, 374, TEXTGRAY);
+			//Orange lap
+			App->fonts->print(App->scene_circuits->npcs[1]->lap, false, 112, 356, TEXTORANGE);
+			//Orange nitros
+			App->fonts->print(App->scene_circuits->npcs[1]->nitros, true, 104, 374, TEXTORANGE);
 
+			//Gray lap
+			App->fonts->print(App->scene_circuits->npcs[2]->lap, false, 135, 356, TEXTGRAY);
+			//Gray nitros
+			App->fonts->print(App->scene_circuits->npcs[2]->nitros, true, 127, 374, TEXTGRAY);
+		}
+		else {
+			//Blue lap
+			App->fonts->print(App->scene_circuits->players[1]->lap, false, 91, 356, TEXTBLUE);
+			//Blue nitros
+			App->fonts->print(App->scene_circuits->players[1]->nitros, true, 82, 374, TEXTBLUE);
+
+			//Orange lap
+			App->fonts->print(App->scene_circuits->npcs[0]->lap, false, 112, 356, TEXTORANGE);
+			//Orange nitros
+			App->fonts->print(App->scene_circuits->npcs[0]->nitros, true, 104, 374, TEXTORANGE);
+
+			//Gray lap
+			App->fonts->print(App->scene_circuits->npcs[1]->lap, false, 135, 356, TEXTGRAY);
+			//Gray nitros
+			App->fonts->print(App->scene_circuits->npcs[1]->nitros, true, 127, 374, TEXTGRAY);
+		}
+
+		
+	}
+	else {
+		//Red lap
+		App->fonts->print(App->scene_circuits->npcs[0]->lap, false, 69, 356, TEXTRED);
+		//Red nitros
+		App->fonts->print(App->scene_circuits->players[0]->nitros, true, 60, 374, TEXTRED);
+
+		//Blue lap
+		App->fonts->print(App->scene_circuits->npcs[1]->lap, false, 91, 356, TEXTBLUE);
+		//Blue nitros
+		App->fonts->print(App->scene_circuits->npcs[1]->nitros, true, 82, 374, TEXTBLUE);
+
+		//Orange lap
+		App->fonts->print(App->scene_circuits->npcs[2]->lap, false, 112, 356, TEXTORANGE);
+		//Orange nitros
+		App->fonts->print(App->scene_circuits->npcs[2]->nitros, true, 104, 374, TEXTORANGE);
+
+		//Gray lap
+		App->fonts->print(App->scene_circuits->npcs[3]->lap, false, 135, 356, TEXTGRAY);
+		//Gray nitros
+		App->fonts->print(App->scene_circuits->npcs[3]->nitros, true, 127, 374, TEXTGRAY);
+	}
 }
 
 void Scoreboard::CleanUp()
