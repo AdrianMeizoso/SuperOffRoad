@@ -37,7 +37,7 @@ bool ModuleSceneTitle::Start()
 		fx = App->audio->LoadFx("rtype/starting.wav");
 
 	start_time = SDL_GetTicks();
-	total_time = (Uint32)(7.0f * 1000.0f);
+	total_time = (Uint32)(3.0f * 1000.0f);
 
 	return true;
 }
@@ -61,27 +61,14 @@ update_status ModuleSceneTitle::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->fade->isFading() == false)
 	{
-		App->fade->FadeToBlack((Module*)App->scene_levelOne, this, 0.05f);
+		App->fade->FadeToBlack((Module*)App->scene_select, this, 0.05f);
 		App->audio->PlayFx(fx);
 	}
 
 
-	if (now >= total_time)
+	if (now >= total_time && App->fade->isFading() == false)
 	{
-		/*
-		rect.h = 400;
-		rect.w = 640;
-		rect.x = 608;
-		rect.y = 800;
-
-		App->renderer->Blit(background, 0, SCREEN_HEIGHT / 2 - rect.h / 2, &rect);
-
-		if (App->input->GetKey(SDL_SCANCODE_INSERT) == KEY_DOWN && App->fade->isFading() == false)
-		{
-			App->fade->FadeToBlack((Module*)App->scene_levelOne, this, 1);
-			App->audio->PlayFx(fx);
-		}
-		*/
+		App->fade->FadeToBlack((Module*)App->scene_select, this, 0.05f);
 	}
 
 	return UPDATE_CONTINUE;

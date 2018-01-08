@@ -19,8 +19,8 @@ class ModuleFonts;
 // Game modules ---
 class ModulePlayer;
 class ModuleSceneIntro;
-class ModuleSceneSpace;
 class ModuleSceneTitle;
+class ModulePlayerSelect;
 class ModuleLevelOne;
 
 class Application
@@ -50,7 +50,7 @@ public:
 	ModulePlayer* player;
 	ModuleSceneIntro* scene_intro;
 	ModuleSceneTitle* scene_title;
-	ModuleSceneSpace* scene_space;
+	ModulePlayerSelect* scene_select;
 	ModuleLevelOne* scene_levelOne;
 
 private:

@@ -12,6 +12,7 @@
 
 #include "ModuleSceneIntro.h"
 #include "ModuleSceneTitle.h"
+#include "ModulePlayerSelect.h"
 #include "ModuleLevelOne.h"
 
 
@@ -31,6 +32,7 @@ Application::Application()
 	// Game Modules
 	modules.push_back(scene_title = new ModuleSceneTitle(false));
 	modules.push_back(scene_intro = new ModuleSceneIntro(false));
+	modules.push_back(scene_select = new ModulePlayerSelect(false));
 	modules.push_back(scene_levelOne = new ModuleLevelOne(false));
 
 	// Modules to draw on top of game logic
@@ -44,7 +46,7 @@ Application::Application()
 
 Application::~Application()
 {
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it)
+	for(list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend(); ++it)
 		RELEASE(*it);
 }
 

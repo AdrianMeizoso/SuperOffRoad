@@ -81,6 +81,10 @@
     <ClCompile Include="ModuleSceneTitle.cpp">
       <Filter>Game Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModulePlayerSelect.cpp">
+      <Filter>Game Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleCircuits.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ModuleAudio.h">
@@ -161,5 +165,9 @@
     <ClInclude Include="ModuleSceneTitle.h">
       <Filter>Game Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ModulePlayerSelect.h">
+      <Filter>Game Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCircuits.h" />
   </ItemGroup>
 </Project>

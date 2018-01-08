@@ -56,18 +56,9 @@ update_status ModuleSceneIntro::Update()
 
 	App->renderer->Blit(background, SCREEN_WIDTH / 2 - rect.w / 2, SCREEN_HEIGHT / 2 - rect.h / 2, &rect);
 
-	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->fade->isFading() == false)
+	if (now >= total_time && App->fade->isFading() == false)
 	{
-		App->fade->FadeToBlack((Module*)App->scene_levelOne, this, 0.05f);
-		App->audio->PlayFx(fx);
-	}
-
-	if (now >= total_time)
-	{
-		if (App->fade->isFading() == false)
-		{
 			App->fade->FadeToBlack((Module*)App->scene_title, this, 0.05f);
-		}
 	}
 
 	return UPDATE_CONTINUE;
