@@ -14,7 +14,7 @@ License: GNU GENERAL PUBLIC LICENSE
 
 ## Gameplay video
 You can find a little example of the gameplay below:
-<iframe width="560" height="315" src="https://www.youtube.com/embed/v-EPVxW6f4s" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/9s7Z5lA8xJE" frameborder="0" allowfullscreen></iframe>
 
 Also you can see it in the next link: [https://youtu.be/9s7Z5lA8xJE](https://youtu.be/9s7Z5lA8xJE)
 
