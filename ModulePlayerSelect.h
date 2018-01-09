@@ -16,7 +16,6 @@ public:
 	SDL_Rect playerBlueRect;
 	SDL_Rect spreedShopRect;
 
-	uint fx = 0;
 	Uint32 start_time = 0;
 	Uint32 start_timeTemp = 0;
 

@@ -8,6 +8,8 @@
 #include "ModulePlayerSelect.h"
 #include "ModuleCircuits.h"
 #include "ModuleFonts.h"
+#include <sstream>
+#include <string>
 #include "SDL\include\SDL.h"
 
 
@@ -42,11 +44,6 @@ bool ModulePlayerSelect::Start()
 
 	background = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);
 
-	//App->audio->PlayMusic("Resources/Music/title.ogg", 1.0f);
-
-	if (fx == 0)
-		fx = App->audio->LoadFx("rtype/starting.wav");
-
 	firstTime = true;
 	firstPlayerActive = false;
 	secondPlayerActive = false;
@@ -58,11 +55,11 @@ bool ModulePlayerSelect::Start()
 
 update_status ModulePlayerSelect::Update()
 {
-	char buffer[5];
-
 	Uint32 now = SDL_GetTicks() - start_time;
 	int time = 6 - (now / 1000.0f);
-	
+	std::stringstream stream;
+	stream << time;
+	std::string timeString = stream.str();
 
 	App->renderer->Blit(background, 0, 20, &spreedShopRect);
 	App->renderer->Blit(background, 50, 140, &playerRedRect);
@@ -75,7 +72,7 @@ update_status ModulePlayerSelect::Update()
 			App->fonts->print("PRESS", 115, 235);
 			App->fonts->print("START", 115, 267);
 
-			App->fonts->print(itoa(time, buffer, 10), 145, 315);
+			App->fonts->print(timeString, 145, 315);
 		}
 		else {
 			App->fonts->print("SELECTED", 115, 235);
@@ -86,7 +83,7 @@ update_status ModulePlayerSelect::Update()
 			App->fonts->print("PRESS", 115 + playerRedRect.w + 100, 235);
 			App->fonts->print("START", 115 + playerRedRect.w + 100, 267);
 
-			App->fonts->print(itoa(time, buffer, 10), 145 + playerRedRect.w + 100, 315);
+			App->fonts->print(timeString, 145 + playerRedRect.w + 100, 315);
 		} 
 		else {
 			App->fonts->print("SELECTED", 115 + playerRedRect.w + 100, 235);

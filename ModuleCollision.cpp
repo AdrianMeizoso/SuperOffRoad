@@ -4,6 +4,7 @@
 #include "ModuleRender.h"
 #include "ModuleCollision.h"
 #include "Entity.h"
+#include "SDL/include/SDL.h"
 
 using namespace std;
 
@@ -85,8 +86,10 @@ bool ModuleCollision::CleanUp()
 {
 	LOG("Freeing all colliders");
 
-	for (list<Collider*>::iterator it = colliders.begin(); it != colliders.end(); ++it)
+	for (list<Collider*>::iterator it = colliders.begin(); it != colliders.end();) {
 		RELEASE(*it);
+		it = colliders.erase(it);
+	}
 
 	colliders.clear();
 

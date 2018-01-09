@@ -29,6 +29,7 @@ Application::Application()
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(audio = new ModuleAudio());
 	modules.push_back(readFile = new ModuleReadFile());
+	
 
 	// Game Modules
 	modules.push_back(scene_title = new ModuleSceneTitle(false));

@@ -1,7 +1,7 @@
 #ifndef __ModuleCollision_H__
 #define __ModuleCollision_H__
 
-#include<list>
+#include <list>
 #include "Module.h"
 
 class Entity;
@@ -75,7 +75,7 @@ private:
 	bool debug = false;
 
 	//PLAYER FLAG NPC
-	bool collisionMatrix[3][3] = { { false, true, true },
+	bool collisionMatrix[3][3] = { { true, true, true },
 									{ true, false, true },
 									{ true, true, true } };
 

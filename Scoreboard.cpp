@@ -86,7 +86,7 @@ void Scoreboard::Paint()
 		//Red lap
 		App->fonts->print(App->scene_circuits->npcs[0]->lap, false, 69, 356, TEXTRED);
 		//Red nitros
-		App->fonts->print(App->scene_circuits->players[0]->nitros, true, 60, 374, TEXTRED);
+		App->fonts->print(App->scene_circuits->npcs[0]->nitros, true, 60, 374, TEXTRED);
 
 		//Blue lap
 		App->fonts->print(App->scene_circuits->npcs[1]->lap, false, 91, 356, TEXTBLUE);

@@ -6,6 +6,7 @@
 #include "ModuleRender.h"
 #include "ModuleFadeToBlack.h"
 #include "ModuleSceneTitle.h"
+#include "ModuleCircuits.h"
 #include "SDL\include\SDL.h"
 
 
@@ -31,13 +32,8 @@ bool ModuleSceneTitle::Start()
 
 	background = App->textures->LoadWithColorKey("Resources/Images/Level/General_Sprites.png", 0xBA, 0xFE, 0xCA);
 
-	//App->audio->PlayMusic("Resources/Music/title.ogg", 1.0f);
-
-	if (fx == 0)
-		fx = App->audio->LoadFx("rtype/starting.wav");
-
 	start_time = SDL_GetTicks();
-	total_time = (Uint32)(3.0f * 1000.0f);
+	total_time = (Uint32)(5.0f * 1000.0f);
 
 	return true;
 }
@@ -62,13 +58,12 @@ update_status ModuleSceneTitle::Update()
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->fade->isFading() == false)
 	{
 		App->fade->FadeToBlack((Module*)App->scene_select, this, 0.05f);
-		App->audio->PlayFx(fx);
 	}
-
 
 	if (now >= total_time && App->fade->isFading() == false)
 	{
-		App->fade->FadeToBlack((Module*)App->scene_select, this, 0.05f);
+		App->scene_circuits->nextCircuit(this);
+		//App->fade->FadeToBlack((Module*)App->scene_select, this, 0.05f);
 	}
 
 	return UPDATE_CONTINUE;

@@ -19,7 +19,6 @@ public:
 	
 	SDL_Texture* background = nullptr;
 	SDL_Rect rect;
-	uint fx = 0;
 	Uint32 start_time = 0;
 	Uint32 total_time = 0;
 };

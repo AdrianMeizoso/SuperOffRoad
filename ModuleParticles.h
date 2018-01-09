@@ -54,6 +54,7 @@ public:
 	// prototype particles go here ...
 	Particle* water;
 	Particle* dust;
+	unsigned int fxDust;
 };
 
 #endif // __MODULEPARTICLES_H__

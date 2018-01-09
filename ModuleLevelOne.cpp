@@ -130,6 +130,9 @@ bool ModuleLevelOne::CleanUp()
 	LOG("Unloading space scene");
 
 	App->textures->Unload(background);
+	App->textures->Unload(graphics);
+
+
 
 	return true;
 }
@@ -154,6 +157,7 @@ update_status ModuleLevelOne::Update()
 		}
 	}
 	
+
 	
 	if (App->input->GetMouseButtonDown(1) == KEY_DOWN)
 	{

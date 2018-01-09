@@ -13,6 +13,7 @@ public:
 	~ModuleCircuits();
 
 	bool Start() override;
+	update_status Update() override;
 	bool CleanUp() override;
 
 	void nextCircuit(Module* moduleOff);

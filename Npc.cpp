@@ -390,30 +390,66 @@ void Npc::OnCollide(Collider* extType, CollisionState colState)
 				}
 			}
 		}
+		if (extType->typeCollider == NPC)
+		{
+			Npc* npc = (Npc*)extType->entity;
+
+			if ((angleCalc - npc->angleCalc > 155 && angleCalc - npc->angleCalc < 205) ||
+				(npc->angleCalc - angleCalc > 155 && npc->angleCalc - angleCalc < 205)) {
+				speed *= -1;
+			}
+			else if (angleCalc - npc->angleCalc > 335 || (angleCalc - npc->angleCalc < 25 && angleCalc - npc->angleCalc >= 0) ||
+				npc->angleCalc - angleCalc > 335 || (npc->angleCalc - angleCalc < 25 && npc->angleCalc - angleCalc >= 0))
+			{
+				if (npc->speed > speed)
+				{
+					speed = npc->speed;
+				}
+			}
+			else {
+				if (speed == 0)
+				{
+
+				}
+			}
+		}
 	}
 	else {
-		if (extType->typeCollider == PLAYER)
+		
+		if (speed != 0)
 		{
-			if (speed != 0)
+			int angleForcol = angleCalc + 180;
+			angleForcol = angleForcol % 360;
+
+			float mx = -cosf(radiansFromDegrees(angleForcol));
+			float my = -sinf(radiansFromDegrees(angleForcol));
+
+			position.x += mx;
+			position.y += my;
+
+
+			if (extType->typeCollider == PLAYER)
 			{
-				int angleForcol = angleCalc + 180;
-				angleForcol = angleForcol % 360;
 
-				float mx = -cosf(radiansFromDegrees(angleForcol));
-				float my = -sinf(radiansFromDegrees(angleForcol));
-
-				position.x += mx;
-				position.y += my;
-
-			}
-			
-			Player* p = (Player*)extType->entity;
-			if (angleCalc - p->angle > 335 || (angleCalc - p->angle < 25 && angleCalc - p->angle >= 0) ||
-				p->angle - angleCalc > 335 || (p->angle - angleCalc < 25 && p->angle - angleCalc >= 0))
-			{
-				if (p->speed > speed)
+				Player* p = (Player*)extType->entity;
+				if (angleCalc - p->angle > 335 || (angleCalc - p->angle < 25 && angleCalc - p->angle >= 0) ||
+					p->angle - angleCalc > 335 || (p->angle - angleCalc < 25 && p->angle - angleCalc >= 0))
 				{
-					speed = p->speed;
+					if (p->speed > speed)
+					{
+						speed = p->speed;
+					}
+				}
+			}
+			else if (extType->typeCollider == NPC) {
+				Npc* npc = (Npc*)extType->entity;
+				if (angleCalc - npc->angleCalc > 335 || (angleCalc - npc->angleCalc < 25 && angleCalc - npc->angleCalc >= 0) ||
+					npc->angleCalc - angleCalc > 335 || (npc->angleCalc - angleCalc < 25 && npc->angleCalc - angleCalc >= 0))
+				{
+					if (npc->speed > speed)
+					{
+						speed = npc->speed;
+					}
 				}
 			}
 		}

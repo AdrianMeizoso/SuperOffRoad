@@ -289,6 +289,11 @@ void Player::Paint()
 			}
 		}
 
+		if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+		{
+			++nitros;
+		}
+
 		float angleCalc = angle;
 
 		angleCalc = GetAngleSprite(angle);

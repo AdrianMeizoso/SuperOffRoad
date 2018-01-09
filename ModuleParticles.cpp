@@ -32,6 +32,7 @@ bool ModuleParticles::Start()
 	water->anim.frames.push_back({ 912, 760, 32, 24 });
 	water->anim.speed = 0.2f;
 	water->anim.loop = false;
+	//fxWater = App->audio->LoadFx("Resources/Music/nitro.wav");
 
 	dust = new Particle();
 	dust->typeParticle = DUST;
@@ -45,6 +46,7 @@ bool ModuleParticles::Start()
 	dust->anim.frames.push_back({ 346, 752, 32, 32 });
 	dust->anim.speed = 0.3f;
 	dust->anim.loop = false;
+	fxDust = App->audio->LoadFx("Resources/Music/nitro.wav");
 
 	// TODO 12: Create a new "Explosion" particle 
 	// audio: rtype/explosion.wav
@@ -124,7 +126,7 @@ void ModuleParticles::AddDustParticle(const Particle & particle, int x, int y)
 	Particle* newParticle = new Particle(particle);
 	newParticle->position = { x,y };
 	active.push_back(newParticle);
-	//App->audio->PlayFx(fxparticle);
+	App->audio->PlayFx(fxDust);
 }
 
 
